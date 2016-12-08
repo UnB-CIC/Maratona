@@ -19,14 +19,6 @@ def log(msg):
     if VERBOSE:
         print(msg)
 
-def warning(msg):
-    print('\n'
-          '**********************************'
-          '**********************************\n'
-          '* {:64s} *\n'
-          '**********************************'
-          '**********************************\n'.format(msg))
-
 
 class Contest():
     '''Agrupar funções para criação de uma prova e arquivos ZIP relacionados
@@ -90,6 +82,10 @@ class Contest():
 
             Contest.Dirs.make(desc_dir)
             Contest.Files.fill_template('problem.info', desc_file, rpl_dict)
+
+            cmd = 'cp {}/../{} {}/'.format(target_dir, pdf_file, desc_dir)
+            check_call(cmd, shell=True)
+            log('Created {}/{}'.format(desc_dir, pdf_file))
 
         @staticmethod
         def create_pdf(contest, dest_dir):
@@ -164,6 +160,25 @@ class Contest():
 
     @staticmethod
     def create(problems, contest_tex_file, base_dir='.'):
+        '''
+        Assume-se cada problema está organizado com a seguinte estrutura mínima
+        de arquivos (dentro de um diretório que agrupa problemas com
+        características similares):
+          - característica
+              `- problema
+                   |- input/                (para os casos de teste)
+                   `- output/               (para os resultados esperados)
+
+        Caso se deseje sobrescrever alguma configuração específica, basta
+        acrescentar o(s) diretório(s) e arquivo(s) relacionados ao diretório do
+        problema. Ex:
+          - característica
+              `- problema
+                   |- input/
+                   |- limits/
+                   |    `- java         limites de tempo específicos para java)
+                   `- output/
+        '''
         contest = contest_tex_file[:-4]
         problems = [Contest.Dirs.find_problem(p) for p in problems]
 
@@ -218,6 +233,7 @@ class Contest():
                            action='store_true',
                            help='Omitir os resultados do processo.')
 
+    @staticmethod
     def process_args(args):
         from collections import OrderedDict
         problems = list(OrderedDict.fromkeys(p for p in args.problems))
@@ -229,27 +245,79 @@ class Problem():
     '''Agrupar funções para criação de um problema para realização de um
     Contest no BOCA.
     '''
-    @staticmethod
-    def create_geninput(dir, problem):
-        file_name = '{}/{}/geninput.py'.format(dir, problem)
-        Contest.Files.fill_template('geninput.py', file_name)
-        warning('Não se esqueça de gerar as Entradas/Saídas '
-                        'de teste do problema.')
+
+    class Dirs():
+        @staticmethod
+        def make(dir, problem):
+            Contest.Dirs.make(dir)
+            Contest.Dirs.make(dir + '/' + problem)
+            Contest.Dirs.make(dir + '/' + problem + '/input')
+            Contest.Dirs.make(dir + '/' + problem + '/output')
+
+    class Files():
+        KNOWN_EXTENSIONS = ['c', 'cpp', 'py', 'py3']
+
+        @staticmethod
+        def create_geninput(dir, problem):
+            file_name = '{}/{}/geninput.py'.format(dir, problem)
+            Contest.Files.fill_template('geninput.py', file_name)
+            Problem.warning('Não se esqueça de gerar as Entradas/Saídas de '
+                            'teste do problema.')
+
+        @staticmethod
+        def create_tex(dir, problem):
+            file_name = '{}/{}.tex'.format(dir, problem)
+            Contest.Files.fill_template('problem.tex', file_name)
+            Problem.warning('Não se esqueça de preencher a descrição do '
+                            'problema:             *\n*     '
+                            './{:<58}'.format(file_name))
+
+        @staticmethod
+        def create_solution(dir, problem, solution):
+            for dirpath, dirnames, filenames in os.walk('templates'):
+                for f in filenames:
+                    file_ext = f.split('.')[-1]
+                    if file_ext in solution:
+                        src = 'templates/' + f
+                        dest = '{}/{}/{}.{}'.format(dir, problem, problem,
+                                                    file_ext)
+                        cmd = 'cp {} {}'.format(src, dest)
+                        check_call(cmd, shell=True)
+                        log('Created ' + dest)
+
+            Problem.warning('Não se esqueça de gerar as soluções do problema.'
+                            '                ')
 
     @staticmethod
-    def create_tex(dir, problem):
-        file_name = '{}/{}.tex'.format(dir, problem)
-        Contest.Files.fill_template('problem.tex', file_name)
-        warning('Não se esqueça de preencher a descrição do '
-                        'problema:             *\n*     ./{:<58}'
-                        ''.format(file_name))
+    def create(dir, problem, solution):
+        '''
+        Gera uma estrutura de arquivos inicial (dentro de um diretório que
+        agrupa problemas com características similares), para criação de um
+        problema no formato BOCA. Há uma opção de gerar um arquivo inicial (ou
+        vários) para a solução na linguagem especificada. A estrutura é:
+          - característica
+              `- problema
+                   |- input/          (diretório para os arquivos de teste)
+                   |- output/         (diretório para os arquivos de teste)
+                   |- geninput.py     (programa para gerar a os dados de teste)
+                   |- problema.tex    (arquivo com a descrição do problema)
+                   `- problema.py     ([opcional] arquivo para solução Python)
+        '''
+        Problem.Dirs.make(dir, problem)
+        Problem.Files.create_tex(dir, problem)
+        Problem.Files.create_geninput(dir, problem)
+        if solution:
+            Problem.Files.create_solution(dir, problem, solution)
 
     @staticmethod
-    def make_dirs(dir, problem):
-        Contest.Dirs.make(dir)
-        Contest.Dirs.make(dir + '/' + problem)
-        Contest.Dirs.make(dir + '/' + problem + '/input')
-        Contest.Dirs.make(dir + '/' + problem + '/output')
+    def warning(msg):
+        # 68 caracteres '*'
+        print('\n'
+              '**********************************'
+              '**********************************\n'
+              '* {:64s} *\n'
+              '**********************************'
+              '**********************************\n'.format(msg))
 
     @staticmethod
     def add_subparser(p):
@@ -276,16 +344,23 @@ class Problem():
                            help='Diretório onde criar o problema')
         sub_p.add_argument('problem', type=check_str,
                            help='Identificador do problema')
+        sub_p.add_argument('-s', nargs='?', dest='solution',
+                           default='NoneGiven',
+                           choices=['all'] + Problem.Files.KNOWN_EXTENSIONS,
+                           help='Criar um arquivo para implementação da '
+                           'solução na linguagem especificada.')
         sub_p.add_argument('-q', '--quiet', dest='quiet',
                            action='store_true',
                            help='Omitir os resultados do processo.')
 
     @staticmethod
     def process_args(args):
-        dir, problem = args.dir, args.problem
-        Problem.make_dirs(dir, problem)
-        Problem.create_tex(dir, problem)
-        Problem.create_geninput(dir, problem)
+        if args.solution == 'NoneGiven':
+            args.solution = None
+        elif not args.solution or args.solution == 'all':
+            args.solution = Problem.Files.KNOWN_EXTENSIONS
+
+        Problem.create(args.dir, args.problem, args.solution)
 
 
 class IO():
@@ -295,13 +370,13 @@ class IO():
     @staticmethod
     def execution(src_file):
         def C(src_file):
-            setup = 'gcc -lm -O3 ' + src_file
+            setup = 'gcc -lm -O2 ' + src_file
             cmd = './a.out'
             cleanup = 'rm a.out'
             return (setup, cmd, cleanup)
 
         def CPP(src_file):
-            setup = 'g++ -lm -O3 -std=c++11 ' + src_file
+            setup = 'g++ -lm -O2 -std=c++11 ' + src_file
             cmd = './a.out'
             cleanup = 'rm a.out'
             return (setup, cmd, cleanup)
@@ -394,6 +469,17 @@ class IO():
 
 
 class Output():
+    '''Agrupar funções para criação de dados de saída para testes de um
+    problema para realização de um Contest no BOCA.
+
+    Gera os arquivos de saída a partir de um arquivo de código fonte e dos
+    arquivos de teste de entrada. Assume que existe a seguinte estrutura:
+      - nível
+          `- problema
+               |- input               (diretório para os arquivos de teste)
+               |- output              (diretório para os arquivos de teste)
+               `- src_file.??         (programa com a solução do problema)
+    '''
     @staticmethod
     def add_subparser(p):
         epilog = ('Exemplo de uso:\n'
