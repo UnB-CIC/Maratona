@@ -88,11 +88,16 @@ Exemplo de uso da classe CIC-Maratona:
 \end{document}%
 ```
 
-contest.py
------------
+boca.py
+-------
 
 Para facilitar a configuração do BOCA, um __script__ pode ser utilizado (testado em ambiente GNU/Linux).
 
 ```Python
 python boca.py -h
 ```
+
+Cores
+-----
+
+Os códigos das cores dos balões podem ser vistos [aqui](http://www.w3schools.com/colors/colors_hex.asp) (ou no [PDF](colors_hex.pdf)).
