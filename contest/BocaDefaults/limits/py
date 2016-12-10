@@ -4,7 +4,7 @@
 # and the maximum amount of memory per repetition in the third line (in Mbytes)
 # and the maximum file size in the fourth line (in kbytes)
 # and shall return zero to indicate no failure
-echo 1
+echo 2
 echo 10
 echo 512
 echo 10
