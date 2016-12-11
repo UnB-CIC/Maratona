@@ -80,7 +80,7 @@ class Utils():
     def round_time(x):
         from math import ceil
         c = ceil(x)
-        if x/c > 0.8:
+        if (x / c) > 0.8:
             return c + 1
         return c
 
@@ -162,8 +162,8 @@ class Contest():
         @staticmethod
         def create_zip(letter, problem, target_dir, pdf):
             Utils.makedir(target_dir)
-            Contest.Dirs.copy('./BocaDefaults', target_dir)  # Padrão
-            Contest.Dirs.copy(problem.full_dir(), target_dir)       # Específicos
+            Contest.Dirs.copy('./BocaDefaults', target_dir)     # Padrão
+            Contest.Dirs.copy(problem.full_dir(), target_dir)   # Específicos
             Contest.Files.create_info(target_dir, problem, pdf, letter)
             Utils.zip_dir(target_dir, '../{}.zip'.format(letter))
 
@@ -220,8 +220,13 @@ class Contest():
             n = dirs.count(dir)
             problems[dir] = {'n': n, 'problems': at_least(n, dir)}
 
-        from random import sample
-        return [p for dir in problems for p in sample(problems[dir]['problems'], problems[dir]['n'])]
+        from random import sample, shuffle
+        random_problems = []
+        for key, dict_ in problems.items():
+            for p in sample(dict_['problems'], dict_['n']):
+                random_problems.append(p)
+        shuffle(random_problems)
+        return random_problems
 
     @staticmethod
     def create(problems, contest_tex_file, base_dir='.', date=None):
@@ -276,8 +281,8 @@ class Contest():
             return svalue
 
         epilog = ('Exemplos de uso:\n'
-                 '\tpython %(prog)s fizzbuzz easyled\n'
-                 '\tpython %(prog)s -r 0 0 1 2\n\n')
+                  '\tpython %(prog)s fizzbuzz easyled\n'
+                  '\tpython %(prog)s -r 0 0 1 2\n\n')
 
         sub_p = parser.add_parser('contest', help='gerar arquivos para '
                                   'realização de um Contest',
@@ -290,8 +295,7 @@ class Contest():
                            help='diretório onde criar os arquivos '
                            '(default: %(default)s)')
         sub_p.add_argument('-date', dest='date', type=str,
-                           default=None,
-                           help='data do contest')
+                           help='data da prova')
         sub_p.add_argument('-h', '--help', action='help',
                            help='mostrar esta mensagem e sair')
         sub_p.add_argument('ids', nargs='+', type=str,
@@ -343,15 +347,15 @@ class Problem():
             file_name = '{}/geninput.py3'.format(problem.full_dir())
             Contest.Files.fill_template('geninput.py3', file_name)
             Utils.warning('Não se esqueça de gerar as Entradas/Saídas de '
-                            'teste do problema.')
+                          'teste do problema.')
 
         @staticmethod
         def create_description_tex(problem):
             file_name = '{}/{}.tex'.format(problem.full_dir(), problem.name)
             Contest.Files.fill_template('problem.tex', file_name)
             Utils.warning('Não se esqueça de preencher a descrição do '
-                            'problema:             *\n*     '
-                            './{:<58}'.format(file_name))
+                          'problema:             *\n*     '
+                          './{:<58}'.format(file_name))
 
         @staticmethod
         def create_solution(problem, solution):
@@ -365,7 +369,7 @@ class Problem():
                         Utils.copy(src, dest)
 
             Utils.warning('Não se esqueça de gerar as soluções do problema.'
-                            '                ')
+                          '                ')
 
     @staticmethod
     def create(problem, solution):
