@@ -61,14 +61,18 @@ class Utils():
 
     @staticmethod
     def replace_first(pattern, repl, src_file, dest_file):
+        print('read ' + src_file)
         with open(src_file, 'r') as f:
             from re import sub
             content = sub(pattern, repl, f.read(), 1)
 
         dest = os.path.dirname(dest_file)
+        if not dest:
+            dest = '.'
         if not os.path.isdir(dest):
             Utils.makedir(dest)
 
+        print('write ' + dest_file)
         with open(dest_file, 'w') as f:
             f.write(content)
 
@@ -183,13 +187,19 @@ class Contest():
             return Utils.pdflatex(tex_file, base_dir)
 
         @staticmethod
-        def create_tex(contest, problems):
+        def create_tex(contest, problems, date):
             def tex_format(problem):
-                return '\t\\Problema[{}]{{{}}}%\n'.format(problem.dir, problem.name)
+                return '\t\\Problema[{}]{{{}}}%\n'.format(problem.dir,
+                                                          problem.name)
 
             tex_file = contest + '.tex'
             rpl_dict = {'FILE_NAME': tex_file,
                         'FILE_DATE': strftime('%d/%m/%Y')}
+
+            if date:
+                rpl_dict['CONTEST_DATE'] = '\data{{{}}}%'.format(date)
+            else:
+                rpl_dict['\nCONTEST_DATE'] = ''
 
             tex_problems = ''.join(tex_format(p) for p in problems)
             rpl_dict['INDENTED_PROBLEMS\n'] = tex_problems
@@ -214,7 +224,7 @@ class Contest():
         return [p for dir in problems for p in sample(problems[dir]['problems'], problems[dir]['n'])]
 
     @staticmethod
-    def create(problems, contest_tex_file, base_dir='.'):
+    def create(problems, contest_tex_file, base_dir='.', date=None):
         '''
         Assume-se cada problema está organizado com a seguinte estrutura mínima
         de arquivos (dentro de um diretório que agrupa problemas com
@@ -240,7 +250,7 @@ class Contest():
         base_dir += '/' + contest
 
         Utils.makedir(base_dir)
-        Contest.TestSheet.create_tex(contest, problems)
+        Contest.TestSheet.create_tex(contest, problems, date)
         pdf_file = Contest.TestSheet.create_pdf(contest + '.tex', base_dir)
 
         letter = 'A'
@@ -279,6 +289,9 @@ class Contest():
                            type=str, default='/tmp',
                            help='diretório onde criar os arquivos '
                            '(default: %(default)s)')
+        sub_p.add_argument('-date', dest='date', type=str,
+                           default=None,
+                           help='data do contest')
         sub_p.add_argument('-h', '--help', action='help',
                            help='mostrar esta mensagem e sair')
         sub_p.add_argument('ids', nargs='+', type=str,
@@ -303,7 +316,7 @@ class Contest():
             from collections import OrderedDict
             problems = list(OrderedDict.fromkeys(p for p in args.ids))
 
-        Contest.create(problems, args.tex_file, args.base_dir)
+        Contest.create(problems, args.tex_file, args.base_dir, args.date)
 
 
 class Problem():
@@ -648,8 +661,8 @@ class Output():
 
             if args.time_limit:
                 language = args.src.split('.')[-1]
-                p.name = base_dir.split('/')[-1]
-                tex_file = base_dir + '/' + p.name + '.tex'
+                problem = base_dir.split('/')[-1]
+                tex_file = base_dir + '/' + problem + '.tex'
                 Timer.set_time_limit(base_dir, language, time_limit)
                 Timer.set_LimiteDeTempo(tex_file, time_limit)
 
@@ -720,7 +733,7 @@ if __name__ == '__main__':
     for class_ in classes.values():
         class_.add_subparser(subparsers)
 
-    args, unknown = parser.parse_known_args()
+    args = parser.parse_args()
     Utils.VERBOSE = (not args.quiet)
 
     class_ = classes[args.command]

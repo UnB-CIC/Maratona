@@ -100,4 +100,4 @@ python boca.py -h
 Cores
 -----
 
-Os códigos das cores dos balões podem ser vistos [aqui](http://www.w3schools.com/colors/colors_hex.asp) (ou no [PDF](colors_hex.pdf)).
+Os códigos das cores dos balões podem ser vistos [aqui](http://www.w3schools.com/colors/colors_hex.asp) (ou no [PDF](balloon_colors.pdf)).
