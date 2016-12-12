@@ -41,7 +41,7 @@ def copy_BOCA_dirs(src, dest):
 def dir_problem_tuple(problem, base_dir='.'):
     for dirpath, dirnames, filenames in os.walk(base_dir):
         if problem in dirnames:
-            return Problem('./' + dirpath, problem)
+            return Problem(dirpath, problem)
     raise ValueError('Problema \'' + problem + '\'não encontrado.')
 
 
@@ -103,6 +103,14 @@ def create_tex_file(contest, problems, date):
 
 
 def random_problems(dirs):
+    def prefix(dirs):
+        d = []
+        for dir in dirs:
+            if not dir.startswith('./problems/'):
+                dir = './problems/' + dir
+            d.append(dir)
+        return d
+
     def at_least(n, dir):
         for dirpath, dirnames, filenames in os.walk(dir):
             if len(dirnames) < n:
@@ -110,6 +118,7 @@ def random_problems(dirs):
                                  ''.format(n, dir))
             return dirnames
 
+    dirs = prefix(dirs)
     problems = {}
     for dir in dirs:
         n = dirs.count(dir)

@@ -47,7 +47,7 @@ A classe [MaratonaUnB](MaratonaUnB.cls) facilita a criação de provas, bastando
 
     - conceito
         `- problema
-	         |- problema.tex
+	         `- problema.tex
 
 O arquivo ```problema.tex``` contém a descrição do problema e as definições de entrada/saída a serem utilizadas como exemplos.
 
@@ -83,8 +83,8 @@ Exemplo de uso da classe CIC-Maratona:
 \documentclass{MaratonaUnB}%
 
 \begin{document}%
-    \problema[./0]{parouimpar}%
-    \problema[./1]{fizzbuzz}%
+    \problema[./problems/0]{parouimpar}%
+    \problema[./problems/1]{fizzbuzz}%
 \end{document}%
 ```
 
@@ -94,9 +94,16 @@ Scripts
 Para facilitar a configuração do BOCA, alguns __scripts__ podem ser utilizados (testado em ambiente GNU/Linux).
 
 ```Python
+# Criar um problema
 python problem.py -h
+
+# Gerar arquivos de entrada/saída
 python io.py -h
+
+# Gerar um contest
 python contest.py -h
+
+# Gerar os arquivos de usuários do sistema
 python users.py -h
 ```
 
