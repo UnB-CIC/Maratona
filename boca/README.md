@@ -88,13 +88,16 @@ Exemplo de uso da classe CIC-Maratona:
 \end{document}%
 ```
 
-boca.py
+Scripts
 -------
 
-Para facilitar a configuração do BOCA, um __script__ pode ser utilizado (testado em ambiente GNU/Linux).
+Para facilitar a configuração do BOCA, alguns __scripts__ podem ser utilizados (testado em ambiente GNU/Linux).
 
 ```Python
-python boca.py -h
+python problem.py -h
+python io.py -h
+python contest.py -h
+python users.py -h
 ```
 
 Cores
