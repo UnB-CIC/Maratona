@@ -93,7 +93,7 @@ Scripts
 
 Para facilitar a configuração do BOCA, alguns __scripts__ podem ser utilizados (testado em ambiente GNU/Linux).
 
-```Python
+```bash
 # Criar um problema
 python problem.py -h
 
