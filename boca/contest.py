@@ -5,20 +5,22 @@
 # Assume-se cada problema está organizado com a seguinte estrutura mínima
 # de arquivos (dentro de um diretório que agrupa problemas com
 # características similares):
-#   - característica
-#       `- problema
-#            |- input/                (para os casos de teste)
-#            `- output/               (para os resultados esperados)
+#   - problems
+#        `- característica
+#            `- problema
+#                 |- input/            (para os casos de teste)
+#                 `- output/           (para os resultados esperados)
 
 # Caso se deseje sobrescrever alguma configuração específica, basta
 # acrescentar o(s) diretório(s) e arquivo(s) relacionados ao diretório do
 # problema. Ex:
-#   - característica
-#       `- problema
-#            |- input/
-#            |- limits/
-#            |    `- java         limites de tempo específicos para java)
-#            `- output/
+#   - problems
+#        `- característica
+#                 `- problema
+#                 |- input/
+#                 |- limits/
+#                 |    `- java         (limites de tempo específicos para java)
+#                 `- output/
 
 
 import os
@@ -31,8 +33,7 @@ from problem import Problem
 def copy_BOCA_dirs(src, dest):
     for dirpath, dirnames, filenames in os.walk(src):
         for dir in dirnames:
-            if dir in ['compare', 'compile', 'description', 'input',
-                       'limits', 'output', 'run', 'tests']:
+            if dir in utils.TMPL['BOCA_DIRS']:
                     utils.copy(dirpath + '/' + dir,
                                dest + '/' + dir,
                                '-Tr')
@@ -64,7 +65,7 @@ def create_info_file(target_dir, problem, pdf_file, basename):
                 'DESCRIPTION_FILE': pdf_file}
 
     utils.makedir(desc_dir)
-    utils.fill_template_file('./templates/description/problem.info', desc_file, rpl_dict)
+    utils.fill_template(utils.TMPL['PROBLEM_INFO'], desc_file, rpl_dict)
 
     src = '{}/../{}'.format(target_dir, pdf_file)
     utils.copy(src, desc_dir)
@@ -99,7 +100,7 @@ def create_tex_file(contest, problems, date):
     tex_problems = ''.join(tex_format(p) for p in problems)
     rpl_dict['INDENTED_PROBLEMS\n'] = tex_problems
 
-    utils.fill_template_file('./templates/problems/tex/contest.tex', tex_file, rpl_dict)
+    utils.fill_template(utils.TMPL['CONTEST_TEX'], tex_file, rpl_dict)
 
 
 def random_problems(dirs):

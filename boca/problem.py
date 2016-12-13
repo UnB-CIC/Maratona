@@ -38,16 +38,9 @@ def make_dirs(problem):
     utils.makedir(problem.dir + '/' + problem.name + '/output')
 
 
-def create_geninput_file(problem):
-    file_name = '{}/geninput.py3'.format(problem.full_dir())
-    utils.fill_template_file('./templates/problems/src/geninput.py3', file_name)
-    utils.warning('Não se esqueça de gerar as Entradas/Saídas de '
-                  'teste do problema.')
-
-
 def create_description_tex_file(problem):
     file_name = '{}/{}.tex'.format(problem.full_dir(), problem.name)
-    utils.fill_template_file('./templates/problems/tex/problem.tex', file_name)
+    utils.fill_template(utils.TMPL['PROBLEM_TEX'], file_name)
     utils.warning('Não se esqueça de preencher a descrição do '
                   'problema:             *\n*     '
                   './{:<58}'.format(file_name))
@@ -71,7 +64,6 @@ def create_solution_src_file(problem, solution):
 def create(problem, solution):
     make_dirs(problem)
     create_description_tex_file(problem)
-    create_geninput_file(problem)
     if solution:
         create_solution_src_file(problem, solution)
 

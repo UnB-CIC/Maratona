@@ -10,6 +10,11 @@ import os
 from subprocess import check_call
 
 
+TMPL = {'BOCA_DIRS': ['compare', 'compile', 'description', 'input',
+                       'limits', 'output', 'run', 'tests'],
+        'PROBLEM_INFO': './templates/description/problem.info',
+        'CONTEST_TEX': './templates/problems/tex/contest.tex',
+        'PROBLEM_TEX': './templates/problems/tex/problem.tex'}
 VERBOSE = True
 
 
@@ -24,7 +29,7 @@ def copy(src, dest, flags=''):
     log('Created ' + dest)
 
 
-def fill_template_file(input_file, output_file, rpl_dict=None):
+def fill_template(input_file, output_file, rpl_dict=None):
     with open(input_file, 'r') as f:
         content = f.read()
 

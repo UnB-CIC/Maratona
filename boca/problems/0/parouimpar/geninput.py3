@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#    Arquivo: geninput.py
+#    Arquivo: geninput.py3
 #   Objetivo: Gerar dados de entrada para o problema.
 
 

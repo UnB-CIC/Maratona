@@ -15,8 +15,11 @@ Para agilizar este processo, utilize os arquivos descritos a seguir.
 ### `problems.py` ###
 
 ```bash
-# Criar um problema
+# Ver a documentação
 python problem.py -h
+
+# Criar um problema
+python problem.py 0 parouimpar -s py3
 ```
 
 Este programa gera o esqueleto para criação de um problema dentro de um diretório que agrupa problemas com características similares:
@@ -29,12 +32,20 @@ problems
                   |- output/               (para os resultados esperados)
                   `- problema.tex          (arquivo com a contextualização do problema)
 ```
-Uma vez criada a estrutura, é preciso preencher o arquivo `problema.tex` com a descrição do problema e definição do formato de entrada e saída de dados. Veja a classe [MaratonaUnB](templates/problems/tex/MaratonaUnB.cls) para mais detalhes. O passo seguinte é criar uma série de casos de testes para avaliar uma solução para este problema, conforme as definições. A melhor forma de fazer isto é com um programa que gere casos aleatórios (já no diretório `input`), tomando cuidado para forçar o teste das condições de contorno (ou casos especiais de interesse). A seguir, crie um programa que solucione o problema (conforme as especificações) e gerar a saída adequada para os casos de teste gerados; cada arquivo de saída (no diretório `output`) está associado a um arquivo de entrada (em `input`). Para agilizar este processo, utilize o programa [`io.py`](io.py).
+Uma vez criada a estrutura, é preciso preencher o arquivo `problema.tex` com a descrição do problema e definição do formato de entrada e saída de dados. Veja a classe [`MaratonaUnB`](templates/problems/tex/MaratonaUnB.cls) para mais detalhes. O passo seguinte é criar uma série de casos de testes para avaliar uma solução para este problema, conforme as definições. A melhor forma de fazer isto é com um programa que gere casos aleatórios (já no diretório `input`), tomando cuidado para forçar o teste das condições de contorno (ou casos especiais de interesse). A seguir, crie um programa que solucione o problema (conforme as especificações) e gerar a saída adequada para os casos de teste gerados; cada arquivo de saída (no diretório `output`) está associado a um arquivo de entrada (em `input`). Para agilizar este processo, utilize o programa [`io.py`](io.py).
 
 ```bash
-# Criar entradas/saídas de um problema
+# Ver a documentação
 python io.py -h
+
+# Criar entradas de um problema
+python io.py in problems/1/parouimpar/geninput.py3
+
+# Criar saídas de um problema
+python io.py out problems/1/parouimpar/parouimpar.py3
 ```
+
+A classe `[`MaratonaUnB.cls`](templates/problems/tex/MaratonaUnB.cls) define o comando `\Exemplo`, que carrega (verbatim) o conteúdo de um arquivo de exemplo (entrada e saída), portanto atenção para criar exemplos significativos (e utilizá-los na descrição do problema).
 
 Por fim, é preciso verificar a questão de limites de tempo de execução e atualizar tanto os arquivos no diretório `limits` do problema (caso os limites sejam diferentes dos valores padrões do BOCA definidos em [`templates/limits`](templates/limits)) quanto o `problema.tex`. O `io.py` já lida com isso automaticamente.
 
@@ -54,11 +65,17 @@ Um _contest_ é feito para o BOCA, portanto os problemas devem ser estruturados 
       `- test
 ```
 
-Caso deseje sobrepor alguma configuração para o seu problema, basta incluir o diretório adequado com a configuração específica no diretório do seu problema (como é feito com os diretórios `ìnput` e `output`). Este programa gera um arquivo TeX listando os problemas (veja [MaratonaUnB](templates/problems/tex/MaratonaUnB.cls)), gera um arquivo PDF para a prova, configura um diretório `description` para cada problema e cria um arquivo ZIP para ser utilizado no BOCA.
+Caso deseje sobrepor alguma configuração para o seu problema, basta incluir o diretório adequado com a configuração específica no diretório do seu problema (como é feito com os diretórios `ìnput` e `output`). Este programa gera um arquivo TeX listando os problemas (veja [`MaratonaUnB`](templates/problems/tex/MaratonaUnB.cls)), gera um arquivo PDF para a prova, configura um diretório `description` para cada problema e cria um arquivo ZIP para ser utilizado no BOCA.
 
 ```bash
-# Gerar um contest
+# Ver a documentação
 python contest.py -h
+
+# Gerar um contest com problemas específicos
+python contest.py parouimpar fizzbuzz
+
+# Gerar um contest com problemas aleatórios
+python contest.py 0 0 1
 ```
 
 Os códigos das cores dos balões podem ser encontrados no sítio da [W3Schools](http://www.w3schools.com/colors/colors_hex.asp) (ou no [PDF](doc/balloon_colors.pdf)).
@@ -69,8 +86,11 @@ Os códigos das cores dos balões podem ser encontrados no sítio da [W3Schools]
 Por fim, a criação de usuários pode ser agilizada criando-se arquivos `.txt` adequados:
 
 ```bash
-# Gerar os arquivos de usuários do sistema
+# Ver a documentação
 python users.py -h
+
+# Gerar os arquivos de usuários do sistema
+python users.py teams.csv -j 2
 ```
 
 Assume-se que há um arquivo CSV listando, em suas 2 primeiras colunas, o nome do time e a instituição que ele representa, nesta ordem.
