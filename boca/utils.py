@@ -2,7 +2,8 @@
 #   @package: utils.py
 #    @author: Guilherme N. Ramos (gnramos@unb.br)
 #
-# Gera os arquivos necessários para criação de usuários para o BOCA.
+# Arquivos necessários para funções utilitárias na criação de contests para o
+# BOCA.
 
 
 import os

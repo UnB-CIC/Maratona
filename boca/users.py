@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 #   @package: users.py
 #    @author: Guilherme N. Ramos (gnramos@unb.br)
+#
+# Gera os arquivos necessários para criação de usuários para o BOCA.
 
 
 def config(user_id, usertype, fullname, description, multilogin=0):

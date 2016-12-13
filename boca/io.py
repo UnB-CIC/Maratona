@@ -10,7 +10,7 @@
 #   - nível
 #       `- problema
 #            |- input               (diretório para os arquivos de teste)
-#            |- output              (diretório para os arquivos de teste)
+#            `- output              (diretório para os arquivos de teste)
 
 
 import os

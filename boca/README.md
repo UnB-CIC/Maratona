@@ -1,13 +1,8 @@
-# Maratona UnB #
-
-Repositório de código. Para informações, visite o site oficial: [http://www.maratona.cic.unb.br](http://www.maratona.cic.unb.br).
-
-
-## BOCA ##
+# BOCA #
 
 O [BOCA](http://www.ime.usp.br/~cassio/boca/) é um sistema de administração de competições de programação. A forma mais simples de instalá-lo é usando pacotes DEB: [https://github.com/maratona-linux](https://github.com/maratona-linux) (é uma boa ideia ver [esta discussão](https://groups.google.com/forum/#!msg/boca-users/W2x3lRivUWs/F-S9CIrjAQAJ)).
 
-### _Contest_ ###
+## _Contest_ ##
 
 Uma competição (_contest_) envolve uma série de arquivos para, basicamente, 3 funcionalidades:
 
@@ -17,7 +12,7 @@ Uma competição (_contest_) envolve uma série de arquivos para, basicamente, 3
 
 Para agilizar este processo, utilize os arquivos descritos a seguir.
 
-#### `problems.py` ####
+### `problems.py` ###
 
 ```bash
 # Criar um problema
@@ -41,9 +36,9 @@ Uma vez criada a estrutura, é preciso preencher o arquivo `problema.tex` com a 
 python io.py -h
 ```
 
-Por fim, é preciso verificar a questão de limites de tempo de execução e atualizar tanto os arquivos no diretório `limits` do problema (caso os limites sejam diferentes dos valores padrões do BOCA definidos em [templates/limits](templates/limits)) quanto o `problema.tex`. O `io.py` já lida com isso automaticamente.
+Por fim, é preciso verificar a questão de limites de tempo de execução e atualizar tanto os arquivos no diretório `limits` do problema (caso os limites sejam diferentes dos valores padrões do BOCA definidos em [`templates/limits`](templates/limits)) quanto o `problema.tex`. O `io.py` já lida com isso automaticamente.
 
-#### `contest.py` ####
+### `contest.py` ###
 
 Um _contest_ é feito para o BOCA, portanto os problemas devem ser estruturados em 8 diretórios:
 
@@ -69,7 +64,7 @@ python contest.py -h
 Os códigos das cores dos balões podem ser encontrados no sítio da [W3Schools](http://www.w3schools.com/colors/colors_hex.asp) (ou no [PDF](doc/balloon_colors.pdf)).
 
 
-#### `users.py` ####
+### `users.py` ###
 
 Por fim, a criação de usuários pode ser agilizada criando-se arquivos `.txt` adequados:
 
