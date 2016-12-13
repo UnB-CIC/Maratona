@@ -64,7 +64,7 @@ def create_info_file(target_dir, problem, pdf_file, basename):
                 'DESCRIPTION_FILE': pdf_file}
 
     utils.makedir(desc_dir)
-    utils.fill_template_file('problem.info', desc_file, rpl_dict)
+    utils.fill_template_file('./templates/description/problem.info', desc_file, rpl_dict)
 
     src = '{}/../{}'.format(target_dir, pdf_file)
     utils.copy(src, desc_dir)
@@ -72,7 +72,7 @@ def create_info_file(target_dir, problem, pdf_file, basename):
 
 def create_zip_file(letter, problem, target_dir, pdf):
         utils.makedir(target_dir)
-        copy_BOCA_dirs('./templates/BocaDefaults', target_dir)     # Padrão
+        copy_BOCA_dirs('./templates', target_dir)     # Padrão
         copy_BOCA_dirs(problem.full_dir(), target_dir)   # Específicos
         create_info_file(target_dir, problem, pdf, letter)
         utils.zip_dir(target_dir, '../{}.zip'.format(letter))
@@ -99,7 +99,7 @@ def create_tex_file(contest, problems, date):
     tex_problems = ''.join(tex_format(p) for p in problems)
     rpl_dict['INDENTED_PROBLEMS\n'] = tex_problems
 
-    utils.fill_template_file('contest.tex', tex_file, rpl_dict)
+    utils.fill_template_file('./templates/problems/tex/contest.tex', tex_file, rpl_dict)
 
 
 def random_problems(dirs):

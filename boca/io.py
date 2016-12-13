@@ -91,7 +91,7 @@ def get_BOCA_time_limit(problem, language):
     file_name = '/'.join([problem.full_dir(), 'limits', language])
 
     if not os.path.isfile(file_name):
-        file_name = './templates/BocaDefaults/limits/' + language
+        file_name = './templates/limits/' + language
 
     with open(file_name, 'r') as f:
         from re import match
@@ -173,7 +173,7 @@ def set_BOCA_time_limit(dir, language, time_limit):
     dest = src
 
     if not os.path.isfile(src):
-        src = './templates/BocaDefaults/limits/' + language
+        src = './templates/limits/' + language
 
     pattern = 'echo \d+'
     repl = 'echo {}'.format(time_limit)

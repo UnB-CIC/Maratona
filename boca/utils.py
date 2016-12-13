@@ -24,7 +24,7 @@ def copy(src, dest, flags=''):
 
 
 def fill_template_file(input_file, output_file, rpl_dict=None):
-    with open('./templates/' + input_file, 'r') as f:
+    with open(input_file, 'r') as f:
         content = f.read()
 
     if rpl_dict:
@@ -44,14 +44,24 @@ def makedir(dir):
 
 
 def pdflatex(tex_file, output_dir):
+    from subprocess import Popen
+    from os import environ
+    maratona_env = environ.copy()
+    maratona_env['TEXINPUTS'] = '.:templates/problems//:'
+
     cmd = ['pdflatex', '-output-directory=' + output_dir,
            '-interaction=nonstopmode', '-halt-on-error', tex_file]
     DEVNULL = open(os.devnull, 'w')
-    try:
-        check_call(cmd, stdout=DEVNULL)
-        check_call(cmd, stdout=DEVNULL)  # 2x para indexação correta
-    except:
-        check_call(cmd)  # Mostrar o erro
+
+    with Popen(cmd, stdout=DEVNULL, env=maratona_env) as proc:
+        output, error = proc.communicate()
+        if proc.returncode != 0:
+            with Popen(cmd, env=maratona_env) as proc:
+                # output, error = proc.communicate()
+                raise RuntimeError('Erro ao gerar o PDF.')  # Mostrar o erro
+        else:
+            with Popen(cmd, stdout=DEVNULL, env=maratona_env) as proc:
+                pass  # 2x para indexação correta
 
     # Remoção de arquivos auxiliares
     for dirpath, dirnames, filenames in os.walk(output_dir):
