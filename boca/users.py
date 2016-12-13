@@ -67,12 +67,14 @@ if __name__ == '__main__':
             raise ValueError('É preciso ter pelo menos 1 usuário.')
         return ivalue
 
-    from argparse import ArgumentParser
+    from argparse import ArgumentParser, RawDescriptionHelpFormatter
     parser = ArgumentParser(add_help=False,
                             description='gerar arquivos de usuários para o '
-                            'BOCA', formatter_class=DescriptionFormatter,
+                            'BOCA',
+                            formatter_class=RawDescriptionHelpFormatter,
                             epilog='Exemplo de uso:\n'
                                    '\tpython %(prog)s users.csv')
+
     parser.add_argument('csv', type=str,
                         help='arquivo CSV com os instituições/times')
     parser.add_argument('-d', dest='description', required=True,

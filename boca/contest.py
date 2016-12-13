@@ -176,6 +176,9 @@ if __name__ == '__main__':
                                    '\tpython %(prog)s fizzbuzz easyled\n'
                                    '\tpython %(prog)s -r 0 0 1 2\n\n')
 
+    parser.add_argument('ids', nargs='+', type=str,
+                        help='identificador(es) de problema(s) ou '
+                        'diretório(s)')
     parser.add_argument('-d', dest='base_dir',
                         type=str, default='/tmp',
                         help='diretório onde criar os arquivos '
@@ -184,9 +187,6 @@ if __name__ == '__main__':
                         help='data da prova')
     parser.add_argument('-h', '--help', action='help',
                         help='mostrar esta mensagem e sair')
-    parser.add_argument('ids', nargs='+', type=str,
-                        help='identificador(es) de problema(s) ou '
-                        'diretório(s)')
     parser.add_argument('-q', '--quiet', dest='quiet',
                         action='store_true',
                         help='omitir os resultados do processo')

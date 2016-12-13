@@ -71,14 +71,18 @@ Caso deseje sobrepor alguma configuração para o seu problema, basta incluir o 
 # Ver a documentação
 python contest.py -h
 
-# Gerar um contest com problemas específicos
+# Gerar um contest com problemas
 python contest.py parouimpar fizzbuzz
-
-# Gerar um contest com problemas aleatórios
-python contest.py 0 0 1
 ```
 
-Os códigos das cores dos balões podem ser encontrados no sítio da [W3Schools](http://www.w3schools.com/colors/colors_hex.asp) (ou no [PDF](doc/balloon_colors.pdf)).
+É possível que se deseje criar um _contest_ com problemas aleatórios, o que é feito com a opção `-r`. Neste caso, o programa escolhe um problema aleatório dentro de cada diretório (dentro de [`problems`](problems)) dado como argumento. Espera-se que um diretório represente uma característica marcante de cada problema dentro dele. No caso, cada diretório representa o nível de dificuldade do problema, e o comando a seguir gera os arquivos considerando dois problemas de nível `0`, um de nível `1` e um de nível `2`. A ordem em que são apresentados no _contest_ também é aleatória.
+
+```bash
+# Gerar um contest com problemas aleatórios
+python contest.py -r 2 0 1 0
+```
+
+Para obter os códigos RBG das cores dos balões, veja o sítio [W3Schools](http://www.w3schools.com/colors/colors_hex.asp) (ou o [PDF](doc/balloon_colors.pdf)).
 
 
 ### `users.py` ###
