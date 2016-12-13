@@ -65,7 +65,7 @@ def create_info_file(target_dir, problem, pdf_file, basename):
                 'DESCRIPTION_FILE': pdf_file}
 
     utils.makedir(desc_dir)
-    utils.fill_template(utils.TMPL['PROBLEM_INFO'], desc_file, rpl_dict)
+    utils.fill_template(desc_file, desc_file, rpl_dict)
 
     src = '{}/../{}'.format(target_dir, pdf_file)
     utils.copy(src, desc_dir)
@@ -73,7 +73,7 @@ def create_info_file(target_dir, problem, pdf_file, basename):
 
 def create_zip_file(letter, problem, target_dir, pdf):
         utils.makedir(target_dir)
-        copy_BOCA_dirs('./templates', target_dir)     # Padrão
+        copy_BOCA_dirs('./templates', target_dir)        # Padrão
         copy_BOCA_dirs(problem.full_dir(), target_dir)   # Específicos
         create_info_file(target_dir, problem, pdf, letter)
         utils.zip_dir(target_dir, '../{}.zip'.format(letter))

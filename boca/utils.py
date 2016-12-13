@@ -12,8 +12,6 @@ from subprocess import check_call
 
 TMPL = {'BOCA_DIRS': ['compare', 'compile', 'description', 'input',
                        'limits', 'output', 'run', 'tests'],
-        'PROBLEM_INFO': './templates/description/problem.info',
-        'CONTEST_TEX': './templates/problems/tex/contest.tex',
         'PROBLEM_TEX': './templates/problems/tex/problem.tex'}
 VERBOSE = True
 
