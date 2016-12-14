@@ -12,6 +12,7 @@ from subprocess import check_call
 
 TMPL = {'BOCA_DIRS': ['compare', 'compile', 'description', 'input',
                        'limits', 'output', 'run', 'tests'],
+        'CONTEST_TEX': './templates/problems/tex/contest.tex',
         'PROBLEM_TEX': './templates/problems/tex/problem.tex'}
 VERBOSE = True
 
@@ -48,24 +49,18 @@ def makedir(dir):
 
 
 def pdflatex(tex_file, output_dir):
-    from subprocess import Popen
-    from os import environ
-    maratona_env = environ.copy()
+    maratona_env = os.environ.copy()
     maratona_env['TEXINPUTS'] = '.:templates/problems//:'
 
     cmd = ['pdflatex', '-output-directory=' + output_dir,
            '-interaction=nonstopmode', '-halt-on-error', tex_file]
     DEVNULL = open(os.devnull, 'w')
 
-    with Popen(cmd, stdout=DEVNULL, env=maratona_env) as proc:
-        output, error = proc.communicate()
-        if proc.returncode != 0:
-            with Popen(cmd, env=maratona_env) as proc:
-                # output, error = proc.communicate()
-                raise RuntimeError('Erro ao gerar o PDF.')  # Mostrar o erro
-        else:
-            with Popen(cmd, stdout=DEVNULL, env=maratona_env) as proc:
-                pass  # 2x para indexação correta
+    try:
+        check_call(cmd, env=maratona_env, stdout=DEVNULL)
+        check_call(cmd, env=maratona_env, stdout=DEVNULL)  # 2x para indexação correta
+    except:
+        check_call(cmd, env=maratona_env)  # Mostrar o erro
 
     # Remoção de arquivos auxiliares
     for dirpath, dirnames, filenames in os.walk(output_dir):

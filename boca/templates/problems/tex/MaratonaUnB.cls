@@ -13,14 +13,15 @@
 %%    \data{29 de novembro de 2016}%
 %%
 %%    \begin{document}%
-%%        \Problema[1_gettingstarted]{fizzbuzz}%
-%%        \Problema[3_strings]{led}%
+%%        \Problema[1]{fizzbuzz}%
+%%        \Problema[3]{led}%
 %%    \end{document}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %%%%%%%%%% Modelo de Problema %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% \NomeDoProblema{Nome Completo do Problema}%
+%% \Conceitos{Conceitos/técnicas abordadas}
 %%
 %% Texto introdutório, contextualizando o problema e explicitando o que se
 %% deseja que o programa faça.
@@ -135,8 +136,8 @@
 		{}%
 		{%
 			\ClassError{MaratonaUnB}%
-			{Arquivo '#1' nao encontrado.}%
-			{O arquivo '#1' deveria estar junto ao demais arquivos do problema.}%
+			{Arquivo '#1' nao encontrado}%
+			{O arquivo '#1' deveria estar junto ao demais arquivos do problema}%
 		}%
 }%
 
@@ -149,6 +150,12 @@
 
 % Para cada exemplo, gera uma tabela.
 \newcommand{\@tabelasDeExemplos}{%
+	\ifx\@exemplosCSV\@empty%
+		\ClassError{MaratonaUnB}%
+			{Problema  '\@baseFile.tex' nao define exemplos de teste}%
+			{O arquivo '\@baseFile.tex' deveria definir exemplos para o problema}%
+	\fi%
+
 	\setcounter{exemplo}{0}%
     \foreach \ex in \@exemplosCSV {
     	\stepcounter{exemplo}%
@@ -198,13 +205,13 @@
 
 % Define a lista (CSV) de conceitos e técnicas a serem abordados no problema.
 %   #1 - lista de nomes dos arquivos, separados por vírgulas
-\newcommand{\Conceitos}[1]{\def\@conceitosCSV{#1}}%
+\newcommand{\Conceitos}[1]{\gdef\@conceitosCSV{#1}}%
 % Exemplo de uso:
 %    \Conceitos{string,counting sort}%
 
 % Define a lista (CSV) de exemplos a serem inclusos.
 %   #1 - lista de nomes dos arquivos, separados por vírgulas
-\newcommand{\Exemplos}[1]{\def\@exemplosCSV{#1}}%
+\newcommand{\Exemplos}[1]{\gdef\@exemplosCSV{#1}}%
 % Exemplo de uso:
 %    \Exemplos{1,2,5}%
 
@@ -218,6 +225,11 @@
 % Define o título do problema.
 %   #1 - nome completo do problema
 \newcommand{\NomeDoProblema}[1]{
+	\ifx&#1&%
+		\ClassError{MaratonaUnB}%
+			{Problema  '\@baseFile.tex' sem nome}%
+			{O arquivo '\@baseFile.tex' deveria definir o nome do problema}%
+	\fi%
 	\begin{center}%
 		{\LARGE{\bf Problema\ \Alph{problem} - #1}}%
 	\end{center}
@@ -247,13 +259,13 @@
 	\graphicspath{{\@baseFileDir/}}%
 	\def\@baseFile{\@baseFileDir/#2}%
 
-	\@stopIfNotExists{\@baseFile.tex}%
+	\@stopIfNotExists{\@baseFile}%
 
 	\newpage%
 	\stepcounter{problem}%
 
 	{% garantir o escopo local de inputWidth, caso seja alterada
-		\Exemplos{1}% valor padrão
+		\Exemplos{}% força o erro caso não definidos
 		\input{\@baseFile}%
 		\@tabelasDeExemplos%
 
