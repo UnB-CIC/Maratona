@@ -196,6 +196,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+% Define a lista (CSV) de conceitos e técnicas a serem abordados no problema.
+%   #1 - lista de nomes dos arquivos, separados por vírgulas
+\newcommand{\Conceitos}[1]{\def\@conceitosCSV{#1}}%
+% Exemplo de uso:
+%    \Conceitos{string,counting sort}%
+
 % Define a lista (CSV) de exemplos a serem inclusos.
 %   #1 - lista de nomes dos arquivos, separados por vírgulas
 \newcommand{\Exemplos}[1]{\def\@exemplosCSV{#1}}%
