@@ -13,7 +13,8 @@ from subprocess import check_call
 TMPL = {'BOCA_DIRS': ['compare', 'compile', 'description', 'input',
                        'limits', 'output', 'run', 'tests'],
         'CONTEST_TEX': './templates/problems/tex/contest.tex',
-        'PROBLEM_TEX': './templates/problems/tex/problem.tex'}
+        'PROBLEM_TEX': './templates/problems/tex/problem.tex',
+        'GENINPUT': './templates/problems/src/geninput.py3'}
 VERBOSE = True
 
 
