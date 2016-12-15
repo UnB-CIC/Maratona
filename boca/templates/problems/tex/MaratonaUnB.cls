@@ -13,8 +13,8 @@
 %%    \data{29 de novembro de 2016}%
 %%
 %%    \begin{document}%
-%%        \Problema[1]{fizzbuzz}%
-%%        \Problema[3]{led}%
+%%        \Problema[./problems/1]\Problema[1]{fizzbuzz}%
+%%        \Problema[./problems/3]{led}%
 %%    \end{document}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -274,7 +274,7 @@
 	}%
 }%
 % Exemplo de uso:
-%    \Problema[1_gettingstarted]{fizzbuzz}%
+%    \Problema[./problems/1]{fizzbuzz}%
 
 % Largura da coluna de exemplos de entrada (na tabela de exemplos de IO de um
 % problema). A largura da coluna com exemplos de saída é ajustada
