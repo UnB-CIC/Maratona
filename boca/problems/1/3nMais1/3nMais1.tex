@@ -1,0 +1,35 @@
+%% Guilherme N. Ramos (gnramos@unb.br)
+%%
+%% Baseado em % http://uva.onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=36
+
+\NomeDoProblema{$3n + 1$}% O nome completo do problema.
+\Conceitos{}% Os conceitos/algoritmos abordados neste problema (ex: string, counting sort)
+\LimiteDeTempo{1}%
+
+Considere o seguinte algoritmo para gerar uma sequência de números. Comece com um
+valor inteiro $n$. Se $n$ for par, divida-o por 2. Se $n$ for ímpar, multiplique-o
+por 3 e some 1. Repita este processo para o novo valor de $n$, terminando quando
+$n = 1$. Por exemplo, a seguinte sequência é gerada para $n = 22$:
+\begin{center}22 11 34 17 52 26 13 40 20 10 5 16 8 4 2 1\end{center}
+
+Conjectura-se que este algoritmo terminará ($n = 1$) para qualquer valor inteiro
+$n$. Isto ainda não foi provado matematicamente, mas sabe-se que é verdade para
+$n \in (0, 10^6)$. Para um valor $n$ de entrada, o \emph{comprimento do ciclo}
+de $n$ é a quantidade de números gerados até $1$ (inclusive). Para o exemplo, o
+comprimento do ciclo de 22 é 16.
+
+Dados dois números $i$ e $j$ quaisquer, você deve construir um algoritmo que
+determine o máximo ciclo para qualquer número neste intervalo. Por exemplo,
+sabe-se que o maior ciclo no intervalo \mbox{[1, 10]} é 20.
+
+\Entrada%
+A entrada é formada por um par de inteiros $i$ e $j$ por linha, tais que $0< i,j < 10^6$.
+
+\Saida%
+Para o par de inteiros $i$ e $j$ fornecido, você deve imprimir $i$ e $j$, e o
+máximo ciclo computado para todos os inteiros $k$ ($i \leq k \leq j$). Os inteiros
+$i$ e $j$ devem aparecer na mesma ordem em que foram lidos. Estes três números
+devem ser separados por espaços, todos na mesma linha, com uma linha de saída
+para cada linha de entrada.
+
+\Exemplos{21,22,23,24}%

@@ -215,7 +215,7 @@ if __name__ == '__main__':
             raise ValueError('--time-limit requires --timeit.')
 
         if args.timeit:
-            print('Cronometrando {} execuçõe(s) (por arquivo), isto '
+            print('Cronometrando {} execuções (por arquivo), isto '
                   'pode demorar um pouco...'.format(args.runs))
 
     from argparse import ArgumentParser, RawDescriptionHelpFormatter
