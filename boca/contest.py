@@ -1,26 +1,6 @@
 #  -*- coding: utf-8 -*-
 #    @package: contest.py
 #     @author: Guilherme N. Ramos (gnramos@unb.br)
-#
-# Assume-se cada problema está organizado com a seguinte estrutura mínima
-# de arquivos (dentro de um diretório que agrupa problemas com
-# características similares):
-#   - problems
-#        `- característica
-#            `- problema
-#                 |- input/            (para os casos de teste)
-#                 `- output/           (para os resultados esperados)
-
-# Caso se deseje sobrescrever alguma configuração específica, basta
-# acrescentar o(s) diretório(s) e arquivo(s) relacionados ao diretório do
-# problema. Ex:
-#   - problems
-#        `- característica
-#                 `- problema
-#                 |- input/
-#                 |- limits/
-#                 |    `- java         (limites de tempo específicos para java)
-#                 `- output/
 
 
 import os
@@ -37,13 +17,6 @@ def copy_BOCA_dirs(src, dest):
                     utils.copy(dirpath + '/' + dir,
                                dest + '/' + dir,
                                '-Tr')
-
-
-def dir_problem_tuple(problem, base_dir='.'):
-    for dirpath, dirnames, filenames in os.walk(base_dir):
-        if problem in dirnames:
-            return Problem(dirpath, problem)
-    raise ValueError('Problema \'' + problem + '\'não encontrado.')
 
 
 def create_info_file(target_dir, problem, pdf_file, basename):
@@ -103,6 +76,13 @@ def create_tex_file(contest, problems, date):
     utils.fill_template(utils.TMPL['CONTEST_TEX'], tex_file, rpl_dict)
 
 
+def dir_problem_tuple(problem, base_dir='.'):
+    for dirpath, dirnames, filenames in os.walk(base_dir):
+        if problem in dirnames:
+            return Problem(dirpath, problem)
+    raise ValueError('Problema \'' + problem + '\'não encontrado.')
+
+
 def random_problems(dirs):
     def prefix(dirs):
         d = []
@@ -120,16 +100,15 @@ def random_problems(dirs):
             return dirnames
 
     dirs = prefix(dirs)
-    problems = {}
+    all_problems = {}
     for dir in dirs:
         n = dirs.count(dir)
-        problems[dir] = {'n': n, 'problems': at_least(n, dir)}
+        all_problems[dir] = {'n': n, 'problems': at_least(n, dir)}
 
     from random import sample, shuffle
     random_problems = []
-    for key, dict_ in problems.items():
-        for p in sample(dict_['problems'], dict_['n']):
-            random_problems.append(p)
+    for dir_list in all_problems.values():
+        random_problems.extend(sample(dir_list['problems'], dir_list['n']))
     shuffle(random_problems)
     return random_problems
 

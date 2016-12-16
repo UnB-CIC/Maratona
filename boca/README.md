@@ -30,6 +30,8 @@ problems
            `- problema
                   |- input/                (para os casos de teste)
                   |- output/               (para os resultados esperados)
+                  |- geninput.py3          (programa para gerar a os dados de teste)
+                  |- problema.py3          ([opcional] arquivo para solução Python)
                   `- problema.tex          (arquivo com a contextualização do problema)
 ```
 Uma vez criada a estrutura, é preciso preencher o arquivo `problema.tex` com a descrição do problema e definição do formato de entrada e saída de dados. Veja a classe [`MaratonaUnB`](templates/problems/tex/MaratonaUnB.cls) para mais detalhes. O passo seguinte é criar uma série de casos de testes para avaliar uma solução para este problema, conforme as definições. A melhor forma de fazer isto é com um programa que gere casos aleatórios (já no diretório `input`), tomando cuidado para forçar o teste das condições de contorno (ou casos especiais de interesse). A seguir, crie um programa que solucione o problema (conforme as especificações) e gerar a saída adequada para os casos de teste gerados; cada arquivo de saída (no diretório `output`) está associado a um arquivo de entrada (em `input`). Para agilizar este processo, utilize o programa [`io.py`](io.py).
@@ -49,6 +51,18 @@ A classe `[`MaratonaUnB.cls`](templates/problems/tex/MaratonaUnB.cls) define o c
 
 Por fim, é preciso verificar a questão de limites de tempo de execução e atualizar tanto os arquivos no diretório `limits` do problema (caso os limites sejam diferentes dos valores padrões do BOCA definidos em [`templates/limits`](templates/limits)) quanto o `problema.tex`. O `io.py` já lida com isso automaticamente.
 
+Caso deseje sobrepor alguma configuração para o seu problema, basta incluir o diretório adequado com a configuração específica no diretório do seu problema (como é feito com os diretórios `ìnput` e `output`). Por exemplo, substituir os limites de tempo para Java:
+
+```
+problems
+    `- característica
+           `- problema
+                  |- input/
+                  |- limits/
+                  |    `- java             (limite de tempo específicos para java)
+                  `- output/
+```
+
 ### `contest.py` ###
 
 Um _contest_ é feito para o BOCA, portanto os problemas devem ser estruturados em 8 diretórios:
@@ -65,7 +79,7 @@ Um _contest_ é feito para o BOCA, portanto os problemas devem ser estruturados 
       `- test
 ```
 
-Caso deseje sobrepor alguma configuração para o seu problema, basta incluir o diretório adequado com a configuração específica no diretório do seu problema (como é feito com os diretórios `ìnput` e `output`). Este programa gera um arquivo TeX listando os problemas (veja [`MaratonaUnB`](templates/problems/tex/MaratonaUnB.cls)), gera um arquivo PDF para a prova, configura um diretório `description` para cada problema e cria um arquivo ZIP para ser utilizado no BOCA.
+Este programa gera um arquivo TeX listando os problemas (veja [`MaratonaUnB`](templates/problems/tex/MaratonaUnB.cls)), gera um arquivo PDF para a prova, configura um diretório `description` para cada problema e cria um arquivo ZIP para ser utilizado no BOCA.
 
 ```bash
 # Ver a documentação

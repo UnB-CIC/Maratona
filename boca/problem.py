@@ -1,19 +1,6 @@
 #  -*- coding: utf-8 -*-
 #    @package: problem.py
 #     @author: Guilherme N. Ramos (gnramos@unb.br)
-#
-#
-# Gera uma estrutura de arquivos inicial (dentro de um diretório que
-# agrupa problemas com características similares), para criação de um
-# problema no formato BOCA. Há uma opção de gerar um arquivo inicial (ou
-# vários) para a solução na linguagem especificada. A estrutura é:
-#   - característica
-#       `- problema
-#            |- input/          (diretório para os arquivos de teste)
-#            |- output/         (diretório para os arquivos de teste)
-#            |- geninput.py3    (programa para gerar a os dados de teste)
-#            |- problema.tex    (arquivo com a descrição do problema)
-#            `- problema.py2    ([opcional] arquivo para solução Python)
 
 
 import utils

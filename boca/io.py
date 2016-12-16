@@ -1,16 +1,6 @@
 #  -*- coding: utf-8 -*-
 #    @package: io.py
 #     @author: Guilherme N. Ramos (gnramos@unb.br)
-#
-# Agrupar funções para criação de dados de entrada/saída para testes de um
-# problema para realização de um Contest no BOCA.
-
-# Gera os arquivos de saída a partir de um arquivo de código fonte e dos
-# arquivos de teste de entrada. Assume que existe a seguinte estrutura:
-#   - nível
-#       `- problema
-#            |- input               (diretório para os arquivos de teste)
-#            `- output              (diretório para os arquivos de teste)
 
 
 import os

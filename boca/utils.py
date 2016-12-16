@@ -50,18 +50,18 @@ def makedir(dir):
 
 
 def pdflatex(tex_file, output_dir):
-    maratona_env = os.environ.copy()
-    maratona_env['TEXINPUTS'] = '.:templates/problems//:'
+    env = os.environ.copy()
+    env['TEXINPUTS'] = '.:templates/problems//:'
 
     cmd = ['pdflatex', '-output-directory=' + output_dir,
            '-interaction=nonstopmode', '-halt-on-error', tex_file]
     DEVNULL = open(os.devnull, 'w')
 
     try:
-        check_call(cmd, env=maratona_env, stdout=DEVNULL)
-        check_call(cmd, env=maratona_env, stdout=DEVNULL)  # 2x para indexação correta
+        check_call(cmd, env=env, stdout=DEVNULL)
+        check_call(cmd, env=env, stdout=DEVNULL)  # 2x para indexação correta
     except:
-        check_call(cmd, env=maratona_env)  # Mostrar o erro
+        check_call(cmd, env=env)  # Mostrar o erro
 
     # Remoção de arquivos auxiliares
     for dirpath, dirnames, filenames in os.walk(output_dir):
