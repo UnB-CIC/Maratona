@@ -1,0 +1,31 @@
+%% http://maratona.ime.usp.br/hist/2013/index.html
+\NomeDoProblema{Aritmética com Morse}%
+\Conceitos{}%
+\LimiteDeTempo{1}%
+
+Código Morse é uma forma para transmitir uma mensagem de texto como uma série de pontos ``\texttt{.}'' e traços ``\texttt{-}''. Por exemplo, a letra ``A'' é representada por ``\texttt{.-}'' e a letra ``B'' por ``\texttt{-...}''. Este código tem sido usado por muitos anos em aplicações civis e militares, mas você vai usá-la para Matemática.
+
+Primeiramente damos valores aos pontos e traços, e para economizar espaço, usamos dois caracteres adicionais. A tabela a seguir mostra os quatro caracteres permitidos e seus valores.
+
+\begin{center}%
+	\begin{tabular}{c | c l}%
+	Caractere  & Valor & \\\cline{1-2}%
+	\texttt{.} & 1     & \\%
+	\texttt{-} & 5     & \\%
+	\texttt{:} & 2     & ($2\times$ `\texttt{.}')\\%
+	\texttt{=} & 10    & ($2\times$ `\texttt{-}')%
+	\end{tabular}
+\end{center}%
+
+Um número em Morse é um strign que contém apenas os quatro caracteres listados acima; seu valor é a soma dos valores associados a cada um dos caracteres individuais. Por exemplo, o valor de \mbox{``\texttt{=.-..}''} é \mbox{$10+1+5+1+1 = 18$}. Veja que cada número em Morse representa um valor único, mas há valores que podem ser representados por diversos números em Morse. Por exemplo, há três eles que têm o valor 3: ``\texttt{...}'', ``\texttt{.:}'' e ``\texttt{:.}''.
+
+Além dos números, é preciso definir também as operações. Consideramos dois operadores aritméticos:  ``\texttt{+}'', representando a \emph{adição} e ``\texttt{*}'' para \emph{multiplicação}. Uma expressão em Morse é uma sequência de strings com números e operadores em Morse alternados, que começa e termina com um número em Morse e contém pelo menos um operador. Elas podem ser calculadas pela substituição de cada número em Morse pelo seu valor e, então, avaliação da operação definida com precedência e associatividade tradicionais. Por exemplo, o valor da expressão em Morse  ``\texttt{=.-.. + ... * :.}'' é \mbox{$18 + 3 \times 3 = 18 + (3 \times 3) = 27$}. Dada uma expressão em Morse, escreva o valor de seu resultado.
+
+
+\Entrada%
+A primeira linha é um inteiro $N (1 \leq N \leq 4)$ representando a quantidade de operadores Morse da expressão. A segunda linha contém $2N + 1$ strings (não-vazios) representando a expressão aritmética em Morse, alternando números e operadores. Cada número em Morse tem, no máximo, 7 caracteres válidos.
+
+\Saida%
+A saída é um inteiro indicando o valor resultante da expressão aritmética em Morse.
+
+\Exemplos{A_1,A_2}%
