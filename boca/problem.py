@@ -13,9 +13,29 @@ class Problem():
     def __init__(self, dir, name):
         self.dir = dir
         self.name = name
+        self._full_name_ = None
 
     def full_dir(self):
         return self.dir + '/' + self.name
+
+    def tex_file(self):
+        return '{}/{}.tex'.format(self.full_dir(), self.name)
+
+    def full_name(self):
+        if not self._full_name_:
+            with open(self.tex_file(), 'r') as f:
+                content = f.read()
+
+            from re import search
+            full_name = search(r'\NomeDoProblema{(.*?)}', content)
+
+            if not full_name:
+                raise ValueError('Nome completo do problema não definido '
+                                 'no arquivo \'' + self.tex_file() + '\'.')
+
+            self._full_name_ = full_name.groups(0)[0]
+
+        return self._full_name_
 
 
 def make_dirs(problem):

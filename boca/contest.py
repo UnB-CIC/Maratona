@@ -20,21 +20,10 @@ def copy_BOCA_dirs(src, dest):
 
 
 def create_info_file(target_dir, problem, pdf_file, basename):
-    tex_file = '{}/{}.tex'.format(problem.full_dir(), problem.name)
-
-    with open(tex_file, 'r') as f:
-        content = f.read()
-
-    from re import search
-    full_name = search(r'\NomeDoProblema{(.*?)}', content)
-    if not full_name:
-        raise ValueError('Nome completo do problema não definido '
-                         'no arquivo \'' + tex_file + '\'.')
-
     desc_dir = target_dir + '/description'
     desc_file = desc_dir + '/problem.info'
     rpl_dict = {'BASE_NAME': basename,
-                'FULL_NAME': full_name.groups(0)[0],
+                'FULL_NAME': problem.full_name(),
                 'DESCRIPTION_FILE': pdf_file}
 
     utils.makedir(desc_dir)
@@ -162,7 +151,7 @@ if __name__ == '__main__':
                         type=str, default='/tmp',
                         help='diretório onde criar os arquivos '
                         '(default: %(default)s)')
-    parser.add_argument('-date', dest='date', type=str,
+    parser.add_argument('--data', dest='date', type=str,
                         help='data da prova')
     parser.add_argument('-h', '--help', action='help',
                         help='mostrar esta mensagem e sair')
