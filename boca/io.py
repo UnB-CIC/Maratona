@@ -16,7 +16,9 @@ def gen_input(src_file):
     current_dir = os.getcwd()
     os.chdir(base_dir)
 
-    setup, cmd, cleanup, time_limit = run_stages(src_file)
+    ext = src_file.split('.')[-1].lower()
+    language = utils.PROGRAMMING_LANGUAGES[ext]
+    setup, cmd, cleanup, extra_time = language.run_stages(src_file)
 
     if setup:
         check_call(setup, shell=True)
@@ -33,7 +35,10 @@ def gen_ouput(src_file, timeit, runs=0, set_time_limit=False):
     base_dir = src_file.split('/')
     base_dir = '/'.join(base_dir[:-1])
 
-    setup, bash_cmd, cleanup, extra_time = run_stages(src_file)
+    ext = src_file.split('.')[-1].lower()
+    language = utils.PROGRAMMING_LANGUAGES[ext]
+    setup, bash_cmd, cleanup, extra_time = language.run_stages(src_file)
+
 
     if setup:
         check_call(setup, shell=True)
@@ -99,57 +104,56 @@ def round_time(x):
     return c
 
 
-def run_stages(src_file):
-    def C(src_file):
-        setup = 'gcc -static -O2 ' + src_file + ' -lm'
-        cmd = './a.out'
-        cleanup = 'rm a.out'
-        extra_time = 0
-        return (setup, cmd, cleanup, extra_time)
+# def run_stages(src_file):
+#     def C(src_file):
+#         setup = 'gcc -static -O2 ' + src_file + ' -lm'
+#         cmd = './a.out'
+#         cleanup = 'rm a.out'
+#         extra_time = 0
+#         return (setup, cmd, cleanup, extra_time)
 
-    def CPP(src_file):
-        setup = 'g++ -static -O2 -std=c++11 ' + src_file + ' -lm'
-        cmd = './a.out'
-        cleanup = 'rm a.out'
-        extra_time = 0
-        return (setup, cmd, cleanup, extra_time)
+#     def CPP(src_file):
+#         setup = 'g++ -static -O2 -std=c++11 ' + src_file + ' -lm'
+#         cmd = './a.out'
+#         cleanup = 'rm a.out'
+#         extra_time = 0
+#         return (setup, cmd, cleanup, extra_time)
 
-    def Python2(src_file):
-        setup = None
-        cmd = 'python2 ' + src_file
-        cleanup = None
-        extra_time = 1
-        return (setup, cmd, cleanup, extra_time)
+#     def Python2(src_file):
+#         setup = None
+#         cmd = 'python2 ' + src_file
+#         cleanup = None
+#         extra_time = 1
+#         return (setup, cmd, cleanup, extra_time)
 
-    def Python3(src_file):
-        setup = None
-        cmd = 'python3 ' + src_file
-        cleanup = None
-        extra_time = 1
-        return (setup, cmd, cleanup, extra_time)
+#     def Python3(src_file):
+#         setup = None
+#         cmd = 'python3 ' + src_file
+#         cleanup = None
+#         extra_time = 1
+#         return (setup, cmd, cleanup, extra_time)
 
-    def Java(src_file):
-        # setup = None
-        # cmd = 'javac ' + src_file
-        # cleanup = None
-        # extra_time = 2
-        # return (setup, cmd, cleanup, extra_time)
-        raise NotImplementedError
+#     def Java(src_file):
+#         setup = 'javac ' + src_file
+#         cmd = 'java ' + src_file
+#         cleanup = None
+#         extra_time = 2
+#         return (setup, cmd, cleanup, extra_time)
 
-    ext = src_file.split('.')[-1].lower()
+#     ext = src_file.split('.')[-1].lower()
 
-    if ext in ['py', 'py2']:
-        return Python2(src_file)
-    if ext == 'py3':
-        return Python3(src_file)
-    if ext == 'c':
-        return C(src_file)
-    if ext == 'cpp':
-        return CPP(src_file)
-    if ext == 'java':
-        return Java(src_file)
+#     if ext in ['py', 'py2']:
+#         return Python2(src_file)
+#     if ext == 'py3':
+#         return Python3(src_file)
+#     if ext == 'c':
+#         return C(src_file)
+#     if ext == 'cpp':
+#         return CPP(src_file)
+#     if ext == 'java':
+#         return Java(src_file)
 
-    raise ValueError('Tipo de arquivo \'' + ext + '\' desconhecido.')
+#     raise ValueError('Tipo de arquivo \'' + ext + '\' desconhecido.')
 
 
 def set_problem_description_time_limit(tex_file, time_limit):

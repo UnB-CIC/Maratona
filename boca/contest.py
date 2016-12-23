@@ -10,6 +10,12 @@ import utils
 from problem import Problem
 
 
+def contest_rpl_dict(file_name, date):
+    return {'FILE_NAME': file_name,
+            'FILE_DATE': strftime('%d/%m/%Y'),
+            'CONTEST_DATE\n': '\data{{{}}}\n%'.format(date) if date else ''}
+
+
 def copy_BOCA_dirs(src, dest):
     for dirpath, dirnames, filenames in os.walk(src):
         for dir in dirnames:
@@ -19,50 +25,60 @@ def copy_BOCA_dirs(src, dest):
                                '-Tr')
 
 
-def create_info_file(target_dir, problem, pdf_file, basename):
+def create_contest_tex(tex_file, problems, date):
+    def as_tex(problem):
+        return '\t\\Problema[{}]{{{}}}%'.format(problem.dir, problem.name)
+
+    rpl_dict = contest_rpl_dict(tex_file, date)
+    rpl_dict['INDENTED_PROBLEMS'] = '\n'.join(as_tex(p) for p in problems)
+
+    utils.fill_template(utils.TMPL['CONTEST_TEX'], tex_file, rpl_dict)
+
+
+def create_contest_info_tex(tex_file, problems, date):
+    def as_tex(lang):
+        return '\\texttt{{{}}}'.format(lang)
+
+    def as_row(problem_info):
+        return '{} \\\\\\hline%'.format(problem_info)
+
+    languages = sorted((lang.name, lang.extension)
+                       for lang in utils.PROGRAMMING_LANGUAGES.values())
+    problem_row = []
+    for problem in problems:
+        language_limits = ' & '.join(problem.get_time_limit(ext)
+                                     for _, ext in languages)
+        problem_row.append(' & '.join([problem.letter, problem.full_name(),
+                                       language_limits]))
+
+    rpl_dict = contest_rpl_dict(tex_file, date)
+    rpl_dict['LANGUAGE_COLUMNS'] = ' c' * len(utils.PROGRAMMING_LANGUAGES)
+    rpl_dict['LANGUAGE_NAMES'] = ' & '.join(as_tex(n) for n, _ in languages)
+    rpl_dict['PROBLEM_INFO'] = '\n\t\t\t'.join(as_row(p) for p in problem_row)
+
+    utils.fill_template(utils.TMPL['CONTEST_INFO_TEX'], tex_file, rpl_dict)
+
+
+def create_info_file(target_dir, problem, pdf_file):
     desc_dir = target_dir + '/description'
     desc_file = desc_dir + '/problem.info'
-    rpl_dict = {'BASE_NAME': basename,
+    rpl_dict = {'BASE_NAME': problem.letter,
                 'FULL_NAME': problem.full_name(),
                 'DESCRIPTION_FILE': pdf_file}
 
-    utils.makedir(desc_dir)
     utils.fill_template(desc_file, desc_file, rpl_dict)
 
-    src = '{}/../{}'.format(target_dir, pdf_file)
-    utils.copy(src, desc_dir)
 
-
-def create_zip_file(letter, problem, target_dir, pdf):
+def create_zip_file(problem, target_dir, pdf):
         utils.makedir(target_dir)
-        copy_BOCA_dirs('./templates', target_dir)        # Padrão
-        copy_BOCA_dirs(problem.full_dir(), target_dir)   # Específicos
-        create_info_file(target_dir, problem, pdf, letter)
-        utils.zip_dir(target_dir, '../{}.zip'.format(letter))
+        copy_BOCA_dirs('./templates', target_dir)       # Padrão
+        copy_BOCA_dirs(problem.full_dir(), target_dir)  # Específicos
+        create_info_file(target_dir, problem, pdf)
+        utils.zip_dir(target_dir, '../{}.zip'.format(problem.letter))
 
 
 def create_pdf_file(tex_file, base_dir):
     return utils.pdflatex(tex_file, base_dir)
-
-
-def create_tex_file(contest, problems, date):
-    def tex_format(problem):
-        return '\t\\Problema[{}]{{{}}}%\n'.format(problem.dir,
-                                                  problem.name)
-
-    tex_file = contest + '.tex'
-    rpl_dict = {'FILE_NAME': tex_file,
-                'FILE_DATE': strftime('%d/%m/%Y')}
-
-    if date:
-        rpl_dict['CONTEST_DATE'] = '\data{{{}}}%'.format(date)
-    else:
-        rpl_dict['\nCONTEST_DATE'] = ''
-
-    tex_problems = ''.join(tex_format(p) for p in problems)
-    rpl_dict['INDENTED_PROBLEMS\n'] = tex_problems
-
-    utils.fill_template(utils.TMPL['CONTEST_TEX'], tex_file, rpl_dict)
 
 
 def dir_problem_tuple(problem, base_dir='.'):
@@ -103,23 +119,21 @@ def random_problems(dirs):
 
 
 def create(problems, contest_tex_file, base_dir='.', date=None):
-    contest = contest_tex_file[:-4]
+    contest_name = contest_tex_file[:-4]
     problems = [dir_problem_tuple(p) for p in problems]
 
-    base_dir += '/' + contest
+    base_dir += '/' + contest_name
 
     utils.makedir(base_dir)
-    create_tex_file(contest, problems, date)
-    pdf_file = create_pdf_file(contest + '.tex', base_dir)
+    create_contest_tex(contest_name, problems, date)
+    pdf_file = create_pdf_file(contest_tex_file, base_dir)
+    create_contest_info_tex(contest_name + '_info.tex', problems, date)
+    create_pdf_file(contest_name + '_info.tex', base_dir)
 
-    letter = 'A'
-    for p in problems:
-        utils.log('=== {} - {} ==='.format(letter, p.name))
-        target_dir = base_dir + '/' + p.name
-        create_zip_file(letter, p, target_dir, pdf_file)
-
-        # Ajuste
-        letter = chr(ord(letter) + 1)
+    for problem in problems:
+        utils.log('=== {} - {} ==='.format(problem.letter, problem.name))
+        target_dir = base_dir + '/' + problem.name
+        create_zip_file(problem, target_dir, pdf_file)
 
     utils.remove_subdirs(base_dir)
 

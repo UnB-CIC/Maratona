@@ -6,20 +6,19 @@
 import utils
 
 
-KNOWN_EXTENSIONS = ['c', 'cpp', 'py2', 'py3']
-
-
 class Problem():
+    letter = 'A'
+
     def __init__(self, dir, name):
         self.dir = dir
         self.name = name
         self._full_name_ = None
+        self._limits_ = {}
+        self.letter = Problem.letter
+        Problem.letter = chr(ord(Problem.letter) + 1)
 
     def full_dir(self):
         return self.dir + '/' + self.name
-
-    def tex_file(self):
-        return '{}/{}.tex'.format(self.full_dir(), self.name)
 
     def full_name(self):
         if not self._full_name_:
@@ -36,6 +35,51 @@ class Problem():
             self._full_name_ = full_name.groups(0)[0]
 
         return self._full_name_
+
+    def tex_file(self):
+        return '{}/{}.tex'.format(self.full_dir(), self.name)
+
+    def get_time_limit(self, language):
+        if language not in self._limits_:
+            file_name = '/'.join([self.full_dir(), 'limits', language])
+
+            from os.path import isfile
+            if not isfile(file_name):
+                file_name = './templates/limits/' + language
+            if not isfile(file_name):
+                raise ValueError('Limite não definido para \'{}\'.'
+                                 ''.format(language))
+
+            with open(file_name, 'r') as f:
+                content = f.read()
+
+            from re import search
+            time_limit = search(r'echo (\d+)', content)
+
+            if not time_limit:
+                raise ValueError('Limite de tempo não definido no arquivo '
+                                 '\'' + file_name + '\'.')
+
+            self._limits_[language] = time_limit.groups(0)[0]
+
+        return self._limits_[language]
+
+    def set_time_limit(self, time_limit, language):
+        src = '/'.join([self.full_dir(), 'limits', language])
+        dest = src
+
+        from os.path import isfile
+        if not isfile(src):
+            src = './templates/limits/' + language
+        if not isfile(src):
+            raise ValueError('Limite não definido para \'{}\'.'
+                             ''.format(language))
+
+        pattern = 'echo \d+'
+        repl = 'echo {}'.format(time_limit)
+
+        from utils import replace_first
+        replace_first(pattern, repl, src, dest)
 
 
 def make_dirs(problem):
@@ -63,7 +107,7 @@ def create_solution_src_file(problem, solution):
         for f in filenames:
             file_ext = f.split('.')[-1]
             if file_ext in solution:
-                src = './templates/problems/src/' + f
+                src = './templates/src/' + f
                 dest = '{}/{}.{}'.format(problem.full_dir(),
                                          problem.name, file_ext)
                 utils.copy(src, dest)
@@ -81,6 +125,8 @@ def create(problem, solution):
 
 
 if __name__ == '__main__':
+    languages = [k for k in utils.PROGRAMMING_LANGUAGES]
+
     def check_str(value):
         svalue = str(value)
 
@@ -117,7 +163,7 @@ if __name__ == '__main__':
                         help='omitir os resultados do processo')
     parser.add_argument('-s', nargs='?', dest='solution',
                         default='NoneGiven',
-                        choices=['all'] + KNOWN_EXTENSIONS,
+                        choices=['all'] + languages,
                         help='criar um arquivo para implementação da '
                         'solução na linguagem especificada '
                         '(default: all).')
@@ -126,6 +172,6 @@ if __name__ == '__main__':
     if args.solution == 'NoneGiven':
         args.solution = None
     elif not args.solution or args.solution == 'all':
-        args.solution = KNOWN_EXTENSIONS
+        args.solution = languages
 
     create(Problem(args.dir, args.problem), args.solution)

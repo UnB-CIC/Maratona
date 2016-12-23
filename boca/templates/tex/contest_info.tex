@@ -1,0 +1,89 @@
+%% FILE_NAME (gerado automaticamente em FILE_DATE)
+
+\documentclass{UnBExam}%
+\extraheadheight[0cm]{0mm}%
+\documento{MaratonaUnB de Programação UnB}%
+CONTEST_DATE
+
+\makeatletter%
+\newcommand{\infoHeader}{%
+	\thispagestyle{empty}%
+
+	\begin{center}%
+		\includegraphics[width=.25\textwidth]{MaratonaUnB}%
+	\end{center}%
+
+	\begin{center}%
+		{\Huge\bf\documento@UnBExam}%
+		\\\vspace{1em}%
+		{\small\emph{\data@UnBExam}}%
+		\\\vspace{1em}%
+		Informações.
+	\end{center}%
+}%
+\newcommand{\infoFooter}{%
+	\begin{center}\small v0.1\end{center}%
+}%
+\makeatother%
+
+\begin{document}%
+	\infoHeader%
+	\vspace{2em}%
+	\subsection*{Limites de Tempo}%
+	Os valores são dados em segundos:\\%
+	\begin{center}%
+		\begin{tabular}[t]{c l LANGUAGE_COLUMNS}%
+			\hline%
+			Problema & Nome & LANGUAGE_NAMES \\\hline%
+			PROBLEM_INFO
+		\end{tabular}%
+	\end{center}%
+
+	\subsection*{Limites de Memória}%
+	\begin{itemize}%
+		\setlength{\itemsep}{0pt}%
+		\setlength{\parskip}{0pt}%
+		\item \texttt{C}, \texttt{C++}: 1\texttt{GB}%
+		\item \texttt{Java}: 1\texttt{GB} + 20\texttt{MB} de pilha de execução%
+	\end{itemize}%
+
+	\subsection*{Outros Limites}%
+	\begin{itemize}%
+		\setlength{\itemsep}{0pt}%
+		\setlength{\parskip}{0pt}%
+		\item Tamanho do arquivo fonte: 100\texttt{KB}%
+		\item Tamanho da saída: 1\texttt{MB}%
+	\end{itemize}%
+
+	\subsection*{Comandos de Compilação}%
+	\begin{itemize}%
+		\setlength{\itemsep}{0pt}%
+		\setlength{\parskip}{0pt}%
+		\item \texttt{C: gcc -static -O2 -lm}%
+		\item \texttt{C++: g++ -static -O2 -lm}%
+		\item \texttt{Java: javac}%
+	\end{itemize}%
+
+	\subsection*{\texttt{C/C++}}%
+	\begin{itemize}%
+		\setlength{\itemsep}{0pt}%
+		\setlength{\parskip}{0pt}%
+		\item Seu programa deve retornar \texttt{0} como último comando executado.
+	\end{itemize}%
+
+	\subsection*{\texttt{Java}}%
+	\begin{itemize}%
+		\setlength{\itemsep}{0pt}%
+		\setlength{\parskip}{0pt}%
+		\item Não declare um pacote em seu programa.%
+		\item O nome do arquivo deve seguir a convenção, portanto o nome da sua classe pública deve ser uma letra maiúscula (A, B, $\cdots$, )
+		\item Comando para executar uma solução: \texttt{java -Xms1024m -Xmx1024m -Xss20m}%
+	\end{itemize}%
+	% \subsection*{\texttt{Python}}%
+% 	\begin{itemize}
+% 		\item Be carefull to inform the correct version, using the extension .py2 for version 2 and the extension .py3 for version
+% 3.
+% 	\end{itemize}
+	\vfill%
+	\infoFooter
+\end{document}%

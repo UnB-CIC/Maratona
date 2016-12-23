@@ -19,21 +19,26 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %%%%%%%%%% Modelo de Problema %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% %% Identificação do autor do problema
 %%
-%% \NomeDoProblema{Nome Completo do Problema}%
-%% \Conceitos{Conceitos/técnicas abordadas}
+%% \NomeDoProblema{}% O nome completo do problema.
+%% \Conceitos{}% Os conceitos/algoritmos abordados neste problema.
+%% \Dificuldade{}% O nível de dificuldade do problema.
+%% \LimiteDeTempo{1}% O limite de tempo para execução da solução.
 %%
-%% Texto introdutório, contextualizando o problema e explicitando o que se
-%% deseja que o programa faça.
+%% % Texto introdutório, contextualizando o problema e explicitando o que se
+%% % deseja que o programa faça.
 %%
 %% \Entrada%
-%% Descrição precisa da quantidade de dados de entrada, e do formato destes.
+%% % Descrição precisa da quantidade de dados de entrada, e do formato destes.
 %%
 %% \Saida%
-%% Descrição precisa dos dados de saída, e do formato destes.
+%% % Descrição precisa dos dados de saída, e do formato destes.
 %%
-%% \Exemplos{Lista dos nomes dos arquivos de entrada/saída, separados por
-%% vírgulas, a serem utilizados como exemplos.}%
+%%
+%% \Exemplos{1}% Lista dos nomes dos arquivos de entrada/saída, separados
+%%             % por vírgulas, a serem utilizados como exemplos.
+%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]%
@@ -46,20 +51,30 @@
 \documento{MaratonaUnB de Programação UnB}%
 \data{\today}%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pacotes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{hyperref}% Links internos
 \RequirePackage{pgffor}% laço foreach
 \RequirePackage{totcount}% Contagem de problemas.
 \RequirePackage{verbatim}% Inclusão de exemplos de I/O para problemas.
 
-% Contadores
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Contadores %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcounter{exemplo}%
 \newcounter{problem}%
 \regtotcounter{problem}%
 
-% Margens da tabela de exemplos.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Margens da tabela de exemplos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newlength{\@inputWidth}%
 \newlength{\@outputWidth}%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Funções auxiliares %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Primeira página
 \newcommand{\@capa}{%
 	\thispagestyle{empty}%
@@ -72,14 +87,14 @@
 
 	\begin{center}%
 		{\Huge\bf\documento@UnBExam}%
-		\\\vspace{2em}
+		\\\vspace{2em}%
 		{\small\emph{\data@UnBExam}}%
 		\\\vfill%
 		Este caderno contém \total{problem} problemas; as páginas estão numeradas
 		de 1 a \hyperlink{page.\numpages}{\numpages}.
 	\end{center}%
 	\vfill%
-	\begin{center}\small v0.2\end{center}%
+	\begin{center}\small v0.3\end{center}%
 }%
 
 % Segunda página.
@@ -130,6 +145,22 @@
 	\end{enumerate}%
 }%
 
+% Inclui (verbatim) o arquivo, ajustando os espaços verticais.
+\newcommand{\@exampleCell}[1]{%
+	\vspace{-1.2\baselineskip}%
+	\verbatiminput{#1}%
+	\vspace*{-2\baselineskip}%
+}%
+
+% Limpa as configurações de um problema.
+\newcommand{\@resetDetails}{%
+	\def\@nomeDoProblema{}%
+	\def\@limiteDeTempo{}%
+	\def\@conceitos{}%
+	\def\@dificuldade{}%
+	\def\@exemplosCSV{}%
+}%
+
 % Verificação de arquivos.
 \newcommand{\@stopIfNotExists}[1]{%
 	\IfFileExists{#1}%
@@ -141,21 +172,8 @@
 		}%
 }%
 
-% Inclui (verbatim) o arquivo, ajustando os espaços verticais.
-\newcommand{\@exampleCell}[1]{%
-	\vspace{-1.2\baselineskip}%
-	\verbatiminput{#1}%
-	\vspace*{-2\baselineskip}%
-}%
-
 % Para cada exemplo, gera uma tabela.
 \newcommand{\@tabelasDeExemplos}{%
-	\ifx\@exemplosCSV\@empty%
-		\ClassError{MaratonaUnB}%
-			{Problema  '\@baseFile.tex' nao define exemplos de teste}%
-			{O arquivo '\@baseFile.tex' deveria definir exemplos para o problema}%
-	\fi%
-
 	\setcounter{exemplo}{0}%
     \foreach \ex in \@exemplosCSV {
     	\stepcounter{exemplo}%
@@ -182,9 +200,70 @@
     }
 }%
 
+% Verifica se as configurações de um problema estão definidas.
+\newcommand{\@verificaArquivo}{%
+	\ifx\@nomeDoProblema\@empty%
+		\ClassError{MaratonaUnB}%
+			{Problema  '\@baseFile.tex' sem nome definido}%
+			{O arquivo '\@baseFile.tex' deveria definir o nome do problema}%
+	\fi%
+
+	\ifx\@conceitosCSV\@empty%
+		\ClassError{MaratonaUnB}%
+			{Problema  '\@baseFile.tex' nao define conceito(s) envolvido(s)}%
+			{O arquivo '\@baseFile.tex' deveria definir conceito(s) envolvido(s) na solucao do problema}%
+	\fi%
+
+	\ifx\@dificuldade\@empty%
+		\ClassError{MaratonaUnB}%
+			{Problema  '\@baseFile.tex' nao define a dificuldade}%
+			{O arquivo '\@baseFile.tex' deveria definir a dificuldade como um valor numerico entre 0 e 10 (inclusive)}%
+	\else
+		% Conferindo se é um número (http://tex.stackexchange.com/a/7183)
+		\if!\ifnum9<1\@dificuldade!%
+				\ifnum\@dificuldade>10%
+					\ClassError{MaratonaUnB}%
+					{Problema  '\@baseFile.tex' define a dificuldade invalida '\@dificuldade'}%
+					{O arquivo '\@baseFile.tex' deveria definir a dificuldade como um valor numerico entre 0 e 10 (inclusive)}%
+				\fi%
+			\fi
+		\else%
+			\ClassError{MaratonaUnB}%
+			{Problema  '\@baseFile.tex' define a dificuldade invalida '\@dificuldade'}%
+			{O arquivo '\@baseFile.tex' deveria definir a dificuldade como um valor numerico entre 0 e 10 (inclusive)}%
+		\fi%
+	\fi%
+
+	\ifx\@limiteDeTempo\@empty%
+		\ClassError{MaratonaUnB}%
+			{Problema  '\@baseFile.tex' nao define o limite de tempo}%
+			{O arquivo '\@baseFile.tex' deveria definir o limite de tempo como um valor numerico positivo}%
+	\else
+		% Conferindo se é um número (http://tex.stackexchange.com/a/7183)
+		\if!\ifnum9<1\@limiteDeTempo!%
+				\ifnum\@limiteDeTempo<1%
+					\ClassError{MaratonaUnB}%
+					{Problema  '\@baseFile.tex' define limite de tempo invalido}%
+					{O arquivo '\@baseFile.tex' deveria definir um limite de tempo superior a 0}%
+				\fi%
+			\fi
+		\else%
+			\ClassError{MaratonaUnB}%
+			{Problema  '\@baseFile.tex' define limite de tempo invalido}%
+			{O arquivo '\@baseFile.tex' deveria definir um limite de tempo superior a 0}%
+		\fi%
+	\fi%
+
+	\ifx\@exemplosCSV\@empty%
+		\ClassError{MaratonaUnB}%
+		{Problema  '\@baseFile.tex' nao define exemplos de teste}%
+		{O arquivo '\@baseFile.tex' deveria definir exemplos para o problema}%
+	\fi%
+}%
+
 % Define o formato inicial do documento.
 \AtBeginDocument{%
-	% Valores iniciais.
+	% Inicialização
 	\aoFinalDoProblema{}%
 	\setInputWidth{.5\textwidth}%
 	% Documento
@@ -197,54 +276,61 @@
 	\markboth{}{\documento@UnBExam}%
 }%
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                     Funções que o usuário "pode" acessar                     %
+% Funções públicas %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-% Define a lista (CSV) de conceitos e técnicas a serem abordados no problema.
-%   #1 - lista de nomes dos arquivos, separados por vírgulas
-\newcommand{\Conceitos}[1]{\gdef\@conceitosCSV{#1}}%
-% Exemplo de uso:
-%    \Conceitos{string,counting sort}%
-
-% Define a lista (CSV) de exemplos a serem inclusos.
-%   #1 - lista de nomes dos arquivos, separados por vírgulas
-\newcommand{\Exemplos}[1]{\gdef\@exemplosCSV{#1}}%
-% Exemplo de uso:
-%    \Exemplos{1,2,5}%
-
-% Define o limite de tempo disponível para execução do  problema.
-\newcommand{\LimiteDeTempo}[1]{%
-	\begin{center}%
-		\emph{Limite de tempo: #1s}%
-	\end{center}%
-}%
-
-% Define o título do problema.
-%   #1 - nome completo do problema
-\newcommand{\NomeDoProblema}[1]{
-	\ifx&#1&%
-		\ClassError{MaratonaUnB}%
-			{Problema  '\@baseFile.tex' sem nome}%
-			{O arquivo '\@baseFile.tex' deveria definir o nome do problema}%
-	\fi%
-	\begin{center}%
-		{\LARGE{\bf Problema\ \Alph{problem} - #1}}%
-	\end{center}
-}%
-
-% Define a formatação da seção que descreve a entrada de dados.
-\newcommand{\Entrada}{\subsection*{Entrada}}%
-
-% Define a formatação da seção que descreve a saída de dados.
-\newcommand{\Saida}{\subsection*{Saída}}%
 
 % Define @atEndProblem, que é incluído ao final de cada problema. O conteúdo de
 % @atEndProblem é liberado ao final de cada problema, de modo que cada "sufixo"
 % só seja considerado uma vez por problema.
+%   #1 - conteúdo a ser acrescentado ao final da descrição de um problema
 \newcommand{\aoFinalDoProblema}[1]{\def\@atEndProblem{#1}}%
+% Exemplo de uso:
+%    \aoFinalDoProblema{\emph{Dica: note que os dados estão ordenados.}}%
+
+% Define a lista (CSV) de conceitos e técnicas a serem abordados no problema.
+%   #1 - lista de nomes dos arquivos, separados por vírgulas
+\newcommand{\Conceitos}[1]{\def\@conceitosCSV{#1}}%
+% Exemplo de uso:
+%    \Conceitos{string,counting sort}%
+
+% Define o nível de dificuldade do problema.
+%   #1 - um inteiro entre 0 e 10 (inclusive)
+\newcommand{\Dificuldade}[1]{\def\@dificuldade{#1}}%
+% Exemplo de uso:
+%    \Dificuldade{2}%
+
+% Define a formatação da seção que descreve a entrada de dados.
+\newcommand{\Entrada}{\subsection*{Entrada}}%
+
+% Define a lista (CSV) de exemplos a serem inclusos.
+%   #1 - lista de nomes dos arquivos, separados por vírgulas
+\newcommand{\Exemplos}[1]{\def\@exemplosCSV{#1}}%
+% Exemplo de uso:
+%    \Exemplos{1,2,5}%
+
+% Define o limite de tempo disponível para execução do  problema.
+%   #1 - um inteiro positivo
+\newcommand{\LimiteDeTempo}[1]{%
+	\def\@limiteDeTempo{#1}%
+	%\begin{center}%
+	%	\emph{Limite de tempo: \@limiteDeTempo{s}}%
+	%\end{center}%
+}%
+% Exemplo de uso:
+%    \LimiteDeTempo{2}%
+
+% Define o título do problema.
+%   #1 - nome completo do problema
+\newcommand{\NomeDoProblema}[1]{
+	\def\@nomeDoProblema{#1}%
+	\begin{center}%
+		{\LARGE{\bf Problema\ \Alph{problem} - \@nomeDoProblema}}%
+	\end{center}
+}%
+
+% Define a formatação da seção que descreve a saída de dados.
+\newcommand{\Saida}{\subsection*{Saída}}%
 
 % Insere um problema.
 %   #1 - diretório dos arquivos
@@ -265,8 +351,9 @@
 	\stepcounter{problem}%
 
 	{% garantir o escopo local de inputWidth, caso seja alterada
-		\Exemplos{}% força o erro caso não definidos
+		\@resetDetails% força o erro caso não definidos
 		\input{\@baseFile}%
+		\@verificaArquivo%
 		\@tabelasDeExemplos%
 
 		\@atEndProblem%

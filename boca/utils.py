@@ -11,10 +11,11 @@ from subprocess import check_call
 
 
 TMPL = {'BOCA_DIRS': ['compare', 'compile', 'description', 'input',
-                       'limits', 'output', 'run', 'tests'],
-        'CONTEST_TEX': './templates/problems/tex/contest.tex',
-        'PROBLEM_TEX': './templates/problems/tex/problem.tex',
-        'GENINPUT': './templates/problems/src/geninput.py3'}
+                      'limits', 'output', 'run', 'tests'],
+        'CONTEST_TEX': './templates/tex/contest.tex',
+        'CONTEST_INFO_TEX': './templates/tex/contest_info.tex',
+        'PROBLEM_TEX': './templates/tex/problem.tex',
+        'GENINPUT': './templates/src/geninput.py3'}
 VERBOSE = True
 
 
@@ -51,7 +52,7 @@ def makedir(dir):
 
 def pdflatex(tex_file, output_dir):
     env = os.environ.copy()
-    env['TEXINPUTS'] = '.:templates/problems//:'
+    env['TEXINPUTS'] = '.:templates/tex//:'
 
     cmd = ['pdflatex', '-output-directory=' + output_dir,
            '-interaction=nonstopmode', '-halt-on-error', tex_file]
@@ -114,3 +115,54 @@ def zip_dir(src_dir, file_name):
 
     file_name = os.path.join(src_dir, file_name)
     log('Created ' + os.path.realpath(file_name))
+
+
+class Language():
+    def __init__(self, name, extension, setup, cmd, cleanup, extra_time):
+        self.name = name
+        self.extension = extension
+        self.setup = setup
+        self.cmd = cmd
+        self.cleanup = cleanup
+        self.extra_time = extra_time
+
+    def run_stages(self, src_file):
+        raise NotImplementedError
+
+
+class CLang(Language):
+    def __init__(self):
+        setup = 'gcc -static -O2 -lm'
+        cmd = './a.out'
+        cleanup = 'rm a.out'
+        extra_time = 0
+        super(CLang, self).__init__('C', 'c', setup, cmd, cleanup, extra_time)
+
+    def run_stages(self, src_file):
+        return (self.setup + ' ' + src_file, self.cmd, self.cleanup,
+                self.extra_time)
+
+
+class CPPLang(CLang):
+    def __init__(self):
+        super(CPPLang, self).__init__()
+        self.name = 'C++'
+        self.extension = 'cpp'
+        self.setup = 'g++ -static -O2 -lm'
+
+
+class JavaLang(Language):
+    def __init__(self):
+        setup = 'javac'
+        cmd = 'java'
+        cleanup = 'rm a.out'
+        extra_time = 2
+        super(JavaLang, self).__init__('Java', 'java', setup, cmd, cleanup,
+                                       extra_time)
+
+    def run_stages(self, src_file):
+        return (self.setup + ' ' + src_file, self.cmd, self.cleanup,
+                self.extra_time)
+
+
+PROGRAMMING_LANGUAGES = {'c': CLang(), 'cpp': CPPLang(), 'java': JavaLang()}
