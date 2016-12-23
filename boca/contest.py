@@ -118,15 +118,15 @@ def random_problems(dirs):
     return random_problems
 
 
-def create(problems, contest_tex_file, base_dir='.', date=None):
-    contest_name = contest_tex_file[:-4]
+def create(problems, tex_file, base_dir='.', date=None):
+    contest_name = tex_file[:-4]
     problems = [dir_problem_tuple(p) for p in problems]
 
     base_dir += '/' + contest_name
 
     utils.makedir(base_dir)
-    create_contest_tex(contest_name, problems, date)
-    pdf_file = create_pdf_file(contest_tex_file, base_dir)
+    create_contest_tex(tex_file, problems, date)
+    pdf_file = create_pdf_file(tex_file, base_dir)
     create_contest_info_tex(contest_name + '_info.tex', problems, date)
     create_pdf_file(contest_name + '_info.tex', base_dir)
 
