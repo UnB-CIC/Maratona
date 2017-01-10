@@ -3,8 +3,7 @@
 #     @author: Guilherme N. Ramos (gnramos@unb.br)
 
 
-from os.path import join as os_path_join
-
+import os
 import utils
 
 
@@ -18,11 +17,13 @@ class Problem():
         self.__full_name = None
         self.__time_limits = {}
         self.letter = Problem.letter
+
+        # Nova instância criada, atualizar o identificador.
         Problem.letter = chr(ord(Problem.letter) + 1)
 
     @property
     def full_dir(self):
-        return os_path_join(self.dir, self.name)
+        return os.path.join(self.dir, self.name)
 
     @property
     def full_name(self):
@@ -40,11 +41,11 @@ class Problem():
 
     @property
     def tex_file(self):
-        return '{}/{}.tex'.format(self.full_dir, self.name)
+        return os.path.join(self.full_dir, self.name + '.tex')
 
     def get_time_limit(self, language):
         if language not in self.__time_limits:
-            file_name = os_path_join(self.full_dir, 'limits', language)
+            file_name = os.path.join(self.full_dir, 'limits', language)
 
             from os.path import isfile
             if not isfile(file_name):
@@ -60,7 +61,7 @@ class Problem():
         return self.__time_limits[language]
 
     def set_time_limit(self, time_limit, language):
-        orig = dest = os_path_join(self.full_dir, 'limits', language)
+        orig = dest = os.path.join(self.full_dir, 'limits', language)
 
         from os.path import isfile
         if not isfile(orig):
@@ -76,16 +77,16 @@ class Problem():
 
 def make_dirs(problem):
     utils.makedir(problem.dir)
-    utils.makedir(os_path_join(problem.dir, problem.name))
-    utils.makedir(os_path_join(problem.dir, problem.name, 'input'))
-    utils.makedir(os_path_join(problem.dir, problem.name, 'output'))
+    utils.makedir(os.path.join(problem.dir, problem.name))
+    utils.makedir(os.path.join(problem.dir, problem.name, 'input'))
+    utils.makedir(os.path.join(problem.dir, problem.name, 'output'))
 
 
 def create_description_tex_file(problem):
     utils.fill_template(utils.Templates.TeX.problem(), problem.tex_file)
     utils.warning('Não se esqueça de preencher a descrição do '
-                  'problema:             *\n*     '
-                  '{:<58}'.format(problem.tex_file))
+                  'problema:             *\n*    '
+                  '{:<61}'.format(problem.tex_file))
 
 
 def create_geninput_file(problem):
@@ -99,8 +100,8 @@ def create_solution_src_file(problem, solution):
             file_ext = file_name.split('.')[-1]
             if file_ext in solution:
                 src_file = problem.name + '.' + file_ext
-                orig = os_path_join(utils.Templates.Source.dir(), file_name)
-                dest = os_path_join(problem.full_dir, src_file)
+                orig = os.path.join(utils.Templates.Source.dir(), file_name)
+                dest = os.path.join(problem.full_dir, src_file)
                 utils.copy(orig, dest)
 
     utils.warning('Não se esqueça de gerar as soluções do problema.'
