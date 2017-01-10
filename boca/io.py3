@@ -3,22 +3,35 @@
 #     @author: Guilherme N. Ramos (gnramos@unb.br)
 
 
+from copy import deepcopy
 import os
 from subprocess import check_call
 import utils
 
 
+programming_languages = deepcopy(utils.PROGRAMMING_LANGUAGES)
+programming_languages['py2'] = utils.PythonLang(2)
+programming_languages['py3'] = utils.PythonLang(3)
+
+
+def natural_sort(l):
+    # http://stackoverflow.com/questions/4836710/does-python-have-a-built-in-function-for-string-natural-sort#4836734
+    from re import split
+    convert = lambda text: int(text) if text.isdigit() else text.lower()
+    alphanum_key = lambda key: [ convert(c) for c in split('([0-9]+)', key) ]
+    return sorted(l, key = alphanum_key)
+
+
 def gen_input(src_file):
-    base_dir = src_file.split('/')
-    src_file = base_dir[-1]
-    base_dir = '/'.join(base_dir[:-1])
-
     current_dir = os.getcwd()
-    os.chdir(base_dir)
-
+    root = os.path.dirname(src_file)
+    src_file = os.path.basename(src_file)
     ext = src_file.split('.')[-1].lower()
-    language = utils.PROGRAMMING_LANGUAGES[ext]
-    setup, cmd, cleanup, extra_time = language.run_stages(src_file)
+
+    language = programming_languages[ext]
+    setup, cmd, cleanup = language.run_stages(src_file)
+
+    os.chdir(root)
 
     if setup:
         check_call(setup, shell=True)
@@ -32,23 +45,21 @@ def gen_input(src_file):
 
 
 def gen_ouput(src_file, timeit, runs=0, set_time_limit=False):
-    base_dir = src_file.split('/')
-    base_dir = '/'.join(base_dir[:-1])
-
+    root = os.path.dirname(src_file)
     ext = src_file.split('.')[-1].lower()
-    language = utils.PROGRAMMING_LANGUAGES[ext]
-    setup, bash_cmd, cleanup, extra_time = language.run_stages(src_file)
 
+    language = programming_languages[ext]
+    setup, bash_cmd, cleanup = language.run_stages(src_file)
 
     if setup:
         check_call(setup, shell=True)
 
     max_time = 0
-    input_dir = base_dir + '/input'
+    input_dir = root + '/input'
     for (dirpath, dirnames, filenames) in os.walk(input_dir):
-        for f in sorted(filenames):
-            input_file = '{}/input/{}'.format(base_dir, f)
-            output_file = '{}/output/{}'.format(base_dir, f)
+        for f in natural_sort(filenames):
+            input_file = '{}/input/{}'.format(root, f)
+            output_file = '{}/output/{}'.format(root, f)
             msg = '{} > {}'.format(input_file, output_file)
             cmd = '{} < {}'.format(bash_cmd, msg)
 
@@ -65,35 +76,15 @@ def gen_ouput(src_file, timeit, runs=0, set_time_limit=False):
         check_call(cleanup, shell=True)
 
     if timeit:
-        # time_limit = round_time(max_time) + extra_time
-
-        # extra_time serve como parâmetro em relação a execução em C/C++,
-        # mas esta medida de tempo já é realizada considerando a execução
-        # da própria linguagem, portanto é viável ignorar.
         time_limit = round_time(max_time)
         utils.log('\nTempo máximo: {:0.3f} s (setup: {}).'
                   ''.format(max_time, time_limit))
 
         if set_time_limit:
-            language = src_file.split('.')[-1]
-            problem = base_dir.split('/')[-1]
-            tex_file = base_dir + '/' + problem + '.tex'
-            set_BOCA_time_limit(base_dir, language, time_limit)
+            tex_file = os.path.splitext(root)[0] + '.tex'
+            tex_file = os.path.join(root, tex_file)
+            set_BOCA_time_limit(root, ext, time_limit)
             set_problem_description_time_limit(tex_file, time_limit)
-
-
-def get_BOCA_time_limit(problem, language):
-    file_name = '/'.join([problem.full_dir(), 'limits', language])
-
-    if not os.path.isfile(file_name):
-        file_name = './templates/limits/' + language
-
-    with open(file_name, 'r') as f:
-        from re import match
-        for line in f:
-            m = match('echo (\d+)', line)
-            if m:
-                return m.group(1)
 
 
 def round_time(x):
@@ -104,58 +95,6 @@ def round_time(x):
     return c
 
 
-# def run_stages(src_file):
-#     def C(src_file):
-#         setup = 'gcc -static -O2 ' + src_file + ' -lm'
-#         cmd = './a.out'
-#         cleanup = 'rm a.out'
-#         extra_time = 0
-#         return (setup, cmd, cleanup, extra_time)
-
-#     def CPP(src_file):
-#         setup = 'g++ -static -O2 -std=c++11 ' + src_file + ' -lm'
-#         cmd = './a.out'
-#         cleanup = 'rm a.out'
-#         extra_time = 0
-#         return (setup, cmd, cleanup, extra_time)
-
-#     def Python2(src_file):
-#         setup = None
-#         cmd = 'python2 ' + src_file
-#         cleanup = None
-#         extra_time = 1
-#         return (setup, cmd, cleanup, extra_time)
-
-#     def Python3(src_file):
-#         setup = None
-#         cmd = 'python3 ' + src_file
-#         cleanup = None
-#         extra_time = 1
-#         return (setup, cmd, cleanup, extra_time)
-
-#     def Java(src_file):
-#         setup = 'javac ' + src_file
-#         cmd = 'java ' + src_file
-#         cleanup = None
-#         extra_time = 2
-#         return (setup, cmd, cleanup, extra_time)
-
-#     ext = src_file.split('.')[-1].lower()
-
-#     if ext in ['py', 'py2']:
-#         return Python2(src_file)
-#     if ext == 'py3':
-#         return Python3(src_file)
-#     if ext == 'c':
-#         return C(src_file)
-#     if ext == 'cpp':
-#         return CPP(src_file)
-#     if ext == 'java':
-#         return Java(src_file)
-
-#     raise ValueError('Tipo de arquivo \'' + ext + '\' desconhecido.')
-
-
 def set_problem_description_time_limit(tex_file, time_limit):
     pattern = 'LimiteDeTempo{\d+}%'
     repl = 'LimiteDeTempo{{{}}}%'.format(time_limit)
@@ -163,16 +102,15 @@ def set_problem_description_time_limit(tex_file, time_limit):
 
 
 def set_BOCA_time_limit(dir, language, time_limit):
-    src = '/'.join([dir, 'limits', language])
-    dest = src
+    orig = dest = os.path.join(dir, 'limits', language)
 
-    if not os.path.isfile(src):
-        src = './templates/limits/' + language
+    if not os.path.isfile(orig):
+        orig = utils.Templates.BOCA.limits(language)
 
     pattern = 'echo \d+'
     repl = 'echo {}'.format(time_limit)
 
-    utils.replace_first(pattern, repl, src, dest)
+    utils.replace_first(pattern, repl, orig, dest)
 
 
 def time_it(cmd, runs):
