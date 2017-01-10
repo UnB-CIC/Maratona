@@ -153,13 +153,17 @@ def replace_first(pattern, repl, src_file, dest_file):
 
 
 def warning(msg):
-    # 68 caracteres '*'
-    print('\n'
-          '**********************************'
-          '**********************************\n'
-          '* {:64s} *\n'
-          '**********************************'
-          '**********************************\n'.format(msg))
+    LINE_LENGTH = 70
+    separator = '*' * LINE_LENGTH
+    print('\n' + separator)
+
+    if isinstance(msg, str):
+        msg = [msg]
+
+    for line in msg:
+        print('* {0:{1}} *'.format(line, LINE_LENGTH - 4))
+
+    print(separator + '\n')
 
 
 class Language():

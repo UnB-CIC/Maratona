@@ -71,8 +71,9 @@ class Problem():
                              ''.format(language))
 
         pattern = 'echo \d+'
-        repl = 'echo {}'.format(time_limit)
+        repl = 'echo ' + str(time_limit)
         utils.replace_first(pattern, repl, orig, dest)
+        self.__time_limits[language] = time_limit
 
 
 def make_dirs(problem):
@@ -84,9 +85,8 @@ def make_dirs(problem):
 
 def create_description_tex_file(problem):
     utils.fill_template(utils.Templates.TeX.problem(), problem.tex_file)
-    utils.warning('Não se esqueça de preencher a descrição do '
-                  'problema:             *\n*    '
-                  '{:<61}'.format(problem.tex_file))
+    utils.warning(['Não se esqueça de preencher a descrição do problema:',
+                   '    ' + problem.tex_file])
 
 
 def create_geninput_file(problem):
@@ -104,8 +104,7 @@ def create_solution_src_file(problem, solution):
                 dest = os.path.join(problem.full_dir, src_file)
                 utils.copy(orig, dest)
 
-    utils.warning('Não se esqueça de gerar as soluções do problema.'
-                  '                ')
+    utils.warning('Não se esqueça de gerar as soluções do problema.')
 
 
 def create(problem, solution):
