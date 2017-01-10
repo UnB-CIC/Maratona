@@ -1,0 +1,84 @@
+%% FILE_NAME (gerado automaticamente em FILE_DATE)
+
+\documentclass{UnBExam}%
+\extraheadheight[0cm]{0mm}%
+\documento{Maratona de Programação UnB}%
+CONTEST_DATE
+
+\makeatletter%
+\newcommand{\infoHeader}{%
+	\thispagestyle{empty}%
+
+	\begin{center}%
+		\includegraphics[width=.25\textwidth]{MaratonaUnB}%
+	\end{center}%
+
+	\begin{center}%
+		{\Huge\bf\documento@UnBExam}%
+		\\\vspace{1em}%
+		{\small\emph{\data@UnBExam}}%
+	\end{center}%
+	\vspace*{-2em}%
+}%
+\makeatother%
+
+\newcommand{\infoFooter}{%
+	\begin{center}\small v0.1\end{center}%
+}%
+
+\newcommand{\makesection}[2]{%
+	\subsection*{#1}%
+	\begin{itemize}%
+		\setlength{\itemsep}{0pt}%
+		\setlength{\parskip}{0pt}%
+		#2%
+	\end{itemize}%
+}%
+
+\newcommand{\limitesDeTempo}{%
+	\subsection*{Limites de Tempo}%
+	Os valores são dados em segundos:%
+	\vspace*{-1em}%
+	\begin{center}%
+		\begin{tabular}[t]{c l LANGUAGE_COLUMNS}%
+			\hline%
+			Problema & Nome & LANGUAGE_NAMES \\\hline%
+			PROBLEM_INFO
+		\end{tabular}%
+	\end{center}%
+}%
+
+\newcommand{\limitesDeMemoria}{%
+	\makesection{Limites de Memória}%
+	{%
+		\item \texttt{C}, \texttt{C++}: 1\texttt{GB}%
+		\item \texttt{Java}: 1\texttt{GB} + 20\texttt{MB} de pilha de execução%
+	}%
+}%
+
+\newcommand{\outrosLimites}{%
+	\makesection{Outros Limites}%
+	{%
+		\item Tamanho do arquivo fonte: 100\texttt{KB}%
+		\item Tamanho da saída: 1\texttt{MB}%
+	}%
+}%
+
+\newcommand{\compilacao}{%
+	\makesection{Comandos de Compilação}%
+	{%
+	COMPILATION_COMMANDS
+	}%
+}%
+
+\begin{document}%
+	\infoHeader%
+	\vspace{2em}%
+	\limitesDeTempo%
+	\limitesDeMemoria%
+	\outrosLimites%
+	\compilacao%
+	LANGUAGE_INFO
+	\vfill%
+	\infoFooter
+\end{document}%

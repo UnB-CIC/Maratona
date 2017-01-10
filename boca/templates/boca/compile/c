@@ -21,7 +21,7 @@
 # $1 source_file
 # $2 exe_file (default run.exe)
 # $3 timelimit
-# $4 maximum allowed memory (in MBytes)
+# $4 maximum allowed memory (in MBytes, default 512M)
 #
 # the output of the submission should be directed to the standard output
 #
@@ -108,14 +108,14 @@ fi
 rm -f "$exe" compileit.retcode runit.retcode 2>/dev/null
 cat <<EOF > compileit.sh
 #!/bin/bash
-cc=\`which g++\`
-[ -x "\$cc" ] || cc=/usr/bin/g++
+cc=\`which gcc\`
+[ -x "\$cc" ] || cc=/usr/bin/gcc
 if [ ! -x "\$cc" ]; then
     echo "\$cc not found or it's not executable"
     exit 47
 fi
 cd src
-"\$cc" -static -O2 -o "../$exe" "$name" -lm -std=c++11
+"\$cc" -static -O2 -lm -o "../$exe" "$name"
 echo \$? > ../compileit.retcode
 exit 0
 EOF
@@ -135,7 +135,7 @@ cd "$cdir"
 [ -d /sys/kernel ] || /bin/mount -t sysfs sysfs /sys
 $sf -r1 -F1000 -n0 -U$bocau -G$bocag -C. -ostdout0 -estderr0 -d$maxm -m$maxm -f20000 -t$ttime -T$ttime ./compileit.sh
 echo \$? > runit.retcode
-if [ ! -d /bocajail ]; then
+if [ ! -e /bocajail ]; then
   /bin/umount /proc 2>/dev/null
   #/bin/umount /dev
   /bin/umount /sys 2>/dev/null
