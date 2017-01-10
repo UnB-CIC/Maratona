@@ -12,14 +12,14 @@ Uma competição (_contest_) envolve uma série de arquivos para, basicamente, 3
 
 Para agilizar este processo, utilize os arquivos descritos a seguir.
 
-### `problems.py3` ###
+### `problems.py` ###
 
 ```bash
 # Ver a documentação
-python problem.py3 -h
+python problem.py -h
 
 # Criar um problema
-python problem.py3 0 parouimpar -s py3
+python problem.py 0 parouimpar -s py3
 ```
 
 Este programa gera o esqueleto para criação de um problema dentro de um diretório que agrupa problemas com características similares:

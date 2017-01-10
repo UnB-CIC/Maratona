@@ -24,7 +24,6 @@
 %% \NomeDoProblema{}% O nome completo do problema.
 %% \Conceitos{}% Os conceitos/algoritmos abordados neste problema.
 %% \Dificuldade{}% O nível de dificuldade do problema.
-%% \LimiteDeTempo{1}% O limite de tempo para execução da solução.
 %%
 %% % Texto introdutório, contextualizando o problema e explicitando o que se
 %% % deseja que o programa faça.
@@ -155,7 +154,6 @@
 % Limpa as configurações de um problema.
 \newcommand{\@resetDetails}{%
 	\def\@nomeDoProblema{}%
-	\def\@limiteDeTempo{}%
 	\def\@conceitos{}%
 	\def\@dificuldade{}%
 	\def\@exemplosCSV{}%
@@ -234,26 +232,6 @@
 		\fi%
 	\fi%
 
-	\ifx\@limiteDeTempo\@empty%
-		\ClassError{MaratonaUnB}%
-			{Problema  '\@baseFile.tex' nao define o limite de tempo}%
-			{O arquivo '\@baseFile.tex' deveria definir o limite de tempo como um valor numerico positivo}%
-	\else
-		% Conferindo se é um número (http://tex.stackexchange.com/a/7183)
-		\if!\ifnum9<1\@limiteDeTempo!%
-				\ifnum\@limiteDeTempo<1%
-					\ClassError{MaratonaUnB}%
-					{Problema  '\@baseFile.tex' define limite de tempo invalido}%
-					{O arquivo '\@baseFile.tex' deveria definir um limite de tempo superior a 0}%
-				\fi%
-			\fi
-		\else%
-			\ClassError{MaratonaUnB}%
-			{Problema  '\@baseFile.tex' define limite de tempo invalido}%
-			{O arquivo '\@baseFile.tex' deveria definir um limite de tempo superior a 0}%
-		\fi%
-	\fi%
-
 	\ifx\@exemplosCSV\@empty%
 		\ClassError{MaratonaUnB}%
 		{Problema  '\@baseFile.tex' nao define exemplos de teste}%
@@ -308,17 +286,6 @@
 \newcommand{\Exemplos}[1]{\def\@exemplosCSV{#1}}%
 % Exemplo de uso:
 %    \Exemplos{1,2,5}%
-
-% Define o limite de tempo disponível para execução do  problema.
-%   #1 - um inteiro positivo
-\newcommand{\LimiteDeTempo}[1]{%
-	\def\@limiteDeTempo{#1}%
-	%\begin{center}%
-	%	\emph{Limite de tempo: \@limiteDeTempo{s}}%
-	%\end{center}%
-}%
-% Exemplo de uso:
-%    \LimiteDeTempo{2}%
 
 % Define o título do problema.
 %   #1 - nome completo do problema
