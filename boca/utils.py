@@ -149,6 +149,7 @@ def replace_first(pattern, repl, src_file, dest_file):
 
     with open(dest_file, 'w') as f:
         f.write(content)
+    log('Created ' + dest_file)
 
 
 def warning(msg):
@@ -296,3 +297,7 @@ class PythonLang(Language):
 
 PROGRAMMING_LANGUAGES = {'c': CLang(), 'cpp': CPPLang(), 'java': JavaLang()}
 # 'py2': PythonLang(2), 'py3': PythonLang(3)}
+
+
+if __name__ == '__main__':
+    pass

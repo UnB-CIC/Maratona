@@ -25,9 +25,9 @@ python problem.py3 0 parouimpar -s py3
 Este programa gera o esqueleto para criação de um problema dentro de um diretório que agrupa problemas com características similares:
 
 ```
-problems
-    `- característica
-           `- problema
+problems/
+    `- característica/
+           `- problema/
                   |- input/                (para os casos de teste)
                   |- output/               (para os resultados esperados)
                   |- geninput.py3          (programa para gerar a os dados de teste)
@@ -49,14 +49,14 @@ python io.py3 out problems/1/parouimpar/parouimpar.py3
 
 A classe [`MaratonaUnB.cls`](templates/tex/MaratonaUnB.cls) define o comando `\Exemplo`, que carrega (verbatim) o conteúdo de um arquivo de exemplo (entrada e saída), portanto atenção para criar exemplos significativos (e utilizá-los na descrição do problema).
 
-Por fim, é preciso verificar a questão de limites de tempo de execução e atualizar tanto os arquivos no diretório `limits` do problema (caso os limites sejam diferentes dos valores padrões do BOCA definidos em [`templates/boca/limits`](templates/boca/limits)) quanto o `problema.tex`. O `io.py3` já lida com isso automaticamente.
+Por fim, é preciso verificar a questão de limites de tempo de execução e atualizar os arquivos no diretório `limits` do problema (caso os limites sejam diferentes dos valores padrões do BOCA definidos em [`templates/boca/limits`](templates/boca/limits)). O `io.py3` já lida com isso automaticamente.
 
 Caso deseje sobrepor alguma configuração para o seu problema, basta incluir o diretório adequado com a configuração específica no diretório do seu problema (como é feito com os diretórios `ìnput` e `output`). Por exemplo, substituir os limites de tempo para Java:
 
 ```
-problems
-    `- característica
-           `- problema
+problems/
+    `- característica/
+           `- problema/
                   |- input/
                   |- limits/
                   |    `- java             (limite de tempo específicos para java)
@@ -68,15 +68,15 @@ problems
 Um _contest_ é feito para o BOCA, portanto os problemas devem ser estruturados em 8 diretórios:
 
 ```
-- problema
-      |- compare
-      |- compile
-      |- description
-      |- input
-      |- limits
-      |- output
-      |- run
-      `- test
+- problema/
+      |- compare/
+      |- compile/
+      |- description/
+      |- input/
+      |- limits/
+      |- output/
+      |- run/
+      `- test/
 ```
 
 Este programa gera um arquivo TeX listando os problemas (veja [`MaratonaUnB`](templates/tex/MaratonaUnB.cls)), gera um arquivo PDF para a prova, configura um diretório `description` para cada problema e cria um arquivo ZIP para ser utilizado no BOCA.

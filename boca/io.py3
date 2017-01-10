@@ -6,6 +6,7 @@
 from copy import deepcopy
 import os
 from subprocess import check_call
+
 import utils
 
 
@@ -16,10 +17,14 @@ programming_languages['py3'] = utils.PythonLang(3)
 
 def natural_sort(l):
     # http://stackoverflow.com/questions/4836710/does-python-have-a-built-in-function-for-string-natural-sort#4836734
-    from re import split
-    convert = lambda text: int(text) if text.isdigit() else text.lower()
-    alphanum_key = lambda key: [ convert(c) for c in split('([0-9]+)', key) ]
-    return sorted(l, key = alphanum_key)
+    def convert(text):
+        return int(text) if text.isdigit() else text.lower()
+
+    def alphanum(key):
+        from re import split
+        return [convert(c) for c in split('([0-9]+)', key)]
+
+    return sorted(l, key=alphanum)
 
 
 def gen_input(src_file):
@@ -76,48 +81,36 @@ def gen_ouput(src_file, timeit, runs=0, set_time_limit=False):
         check_call(cleanup, shell=True)
 
     if timeit:
-        time_limit = round_time(max_time)
-        utils.log('\nTempo máximo: {:0.3f} s (setup: {}).'
-                  ''.format(max_time, time_limit))
+        utils.log('\nTempo máximo medido: {:0.3f}s.'.format(max_time))
 
+        from problem import Problem
+        dir, name = os.path.split(root)
+        problem = Problem(dir, name)
+
+        time_limit = round_time(max_time)
         if set_time_limit:
-            tex_file = os.path.splitext(root)[0] + '.tex'
-            tex_file = os.path.join(root, tex_file)
-            set_BOCA_time_limit(root, ext, time_limit)
-            set_problem_description_time_limit(tex_file, time_limit)
+            problem.set_time_limit(time_limit, ext)
+        else:
+            current_time_limit = int(problem.get_time_limit(ext))
+            if current_time_limit != time_limit:
+                utils.warning('O tempo medido foi de {}s, mas a configuração '
+                              'atual é de {}s.     '
+                              ''.format(time_limit, current_time_limit))
+
+        utils.warning('Atenção aos tempos de linguagens diferentes!')
 
 
 def round_time(x):
     from math import ceil
     c = ceil(x)
-    if (x / c) > 0.8:
-        return c + 1
-    return c
-
-
-def set_problem_description_time_limit(tex_file, time_limit):
-    pattern = 'LimiteDeTempo{\d+}%'
-    repl = 'LimiteDeTempo{{{}}}%'.format(time_limit)
-    utils.replace_first(pattern, repl, tex_file, tex_file)
-
-
-def set_BOCA_time_limit(dir, language, time_limit):
-    orig = dest = os.path.join(dir, 'limits', language)
-
-    if not os.path.isfile(orig):
-        orig = utils.Templates.BOCA.limits(language)
-
-    pattern = 'echo \d+'
-    repl = 'echo {}'.format(time_limit)
-
-    utils.replace_first(pattern, repl, orig, dest)
+    return c if (x / c) <= 0.8 else  c + 1
 
 
 def time_it(cmd, runs):
+    from timeit import timeit
     setup = 'from subprocess import check_call'
     stmt = 'check_call(\'{}\', shell=True)'.format(cmd)
 
-    from timeit import timeit
     return timeit(stmt, setup=setup, number=runs) / runs
 
 
