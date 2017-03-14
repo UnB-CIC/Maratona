@@ -1,6 +1,8 @@
-#  -*- coding: utf-8 -*-
-#    @package: io.py
-#     @author: Guilherme N. Ramos (gnramos@unb.br)
+# -*- coding: utf-8 -*-
+#   @package: io.py
+#    @author: Guilherme N. Ramos (gnramos@unb.br)
+#
+# Manipulação de entrada/saída de dados.
 
 
 from copy import deepcopy
@@ -60,22 +62,21 @@ def gen_ouput(src_file, timeit, runs=0, set_time_limit=False):
         check_call(setup, shell=True)
 
     max_time = 0
-    input_dir = root + '/input'
-    for (dirpath, dirnames, filenames) in os.walk(input_dir):
+    for (dirpath, dirnames, filenames) in os.walk(os.path.join(root, 'input')):
         for f in natural_sort(filenames):
-            input_file = '{}/input/{}'.format(root, f)
-            output_file = '{}/output/{}'.format(root, f)
-            msg = '{} > {}'.format(input_file, output_file)
-            cmd = '{} < {}'.format(bash_cmd, msg)
+            input_file = os.path.join(root, 'input', f)
+            output_file = os.path.join(root, 'outut', f)
+            action = input_file + ' > ' + output_file
+            cmd = bash_cmd + ' < ' + action
 
             if timeit:
                 t = time_it(cmd, runs)
-                msg += ' ({:0.3f}s)'.format(t)
+                action += ' ({:0.3f}s)'.format(t)
                 max_time = max(t, max_time)
             else:
                 check_call(cmd, shell=True)
 
-            utils.log(msg)
+            utils.log(action)
 
     if cleanup:
         check_call(cleanup, shell=True)
@@ -101,9 +102,10 @@ def gen_ouput(src_file, timeit, runs=0, set_time_limit=False):
 
 
 def round_time(x):
+    SECOND_THRESHOLD = 0.8
     from math import ceil
     c = ceil(x)
-    return c if (x / c) <= 0.8 else  c + 1
+    return c if (x / c) <= SECOND_THRESHOLD else c + 1
 
 
 def time_it(cmd, runs):

@@ -1,6 +1,8 @@
-#  -*- coding: utf-8 -*-
-#    @package: problem.py
-#     @author: Guilherme N. Ramos (gnramos@unb.br)
+# -*- coding: utf-8 -*-
+#   @package: problem.py
+#    @author: Guilherme N. Ramos (gnramos@unb.br)
+#
+# Lida com a definição de um problema.
 
 
 import os
@@ -47,8 +49,7 @@ class Problem():
         if language not in self.__time_limits:
             file_name = os.path.join(self.full_dir, 'limits', language)
 
-            from os.path import isfile
-            if not isfile(file_name):
+            if not os.path.isfile(file_name):
                 file_name = utils.Templates.BOCA.limits(language)
 
             time_limit = utils.first_occurrence(r'echo (\d+)', file_name)
@@ -63,12 +64,10 @@ class Problem():
     def set_time_limit(self, time_limit, language):
         orig = dest = os.path.join(self.full_dir, 'limits', language)
 
-        from os.path import isfile
-        if not isfile(orig):
+        if not os.path.isfile(orig):
             orig = utils.Templates.BOCA.limits(language)
-        if not isfile(orig):
-            raise ValueError('Limite não definido para \'{}\'.'
-                             ''.format(language))
+        if not os.path.isfile(orig):
+            raise ValueError('Limite não definido para \'' + language + '\'.')
 
         pattern = 'echo \d+'
         repl = 'echo ' + str(time_limit)
@@ -94,8 +93,7 @@ def create_geninput_file(problem):
 
 
 def create_solution_src_file(problem, solution):
-    from os import walk
-    for dirpath, dirnames, filenames in walk(utils.Templates.Source.dir()):
+    for dirpath, dirnames, filenames in os.walk(utils.Templates.Source.dir()):
         for file_name in filenames:
             file_ext = file_name.split('.')[-1]
             if file_ext in solution:
@@ -107,12 +105,12 @@ def create_solution_src_file(problem, solution):
     utils.warning('Não se esqueça de gerar as soluções do problema.')
 
 
-def create(problem, solution):
+def create(problem, language):
     make_dirs(problem)
     create_geninput_file(problem)
     create_description_tex_file(problem)
-    if solution:
-        create_solution_src_file(problem, solution)
+    if language:
+        create_solution_src_file(problem, language)
 
 
 if __name__ == '__main__':

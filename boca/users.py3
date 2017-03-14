@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#   @package: users.py
+#   @package: users.py3
 #    @author: Guilherme N. Ramos (gnramos@unb.br)
 #
 # Gera os arquivos necessários para criação de usuários para o BOCA.
