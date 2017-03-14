@@ -1,6 +1,8 @@
-#  -*- coding: utf-8 -*-
-#    @package: contest.py
-#     @author: Guilherme N. Ramos (gnramos@unb.br)
+# -*- coding: utf-8 -*-
+#   @package: contest.py3
+#    @author: Guilherme N. Ramos (gnramos@unb.br)
+#
+# Criação de um contest.
 
 
 import os
@@ -101,14 +103,16 @@ def create_contest_info_sheet_tex(tex_file, problems, date):
     utils.fill_template(utils.Templates.TeX.info_sheet(), tex_file, rpl_dict)
 
 
-def create_info_file(dest_dir, problem, pdf_file):
+def create_description(dest_dir, problem, pdf_file):
     desc_dir = dest_dir + '/description'
     desc_file = desc_dir + '/problem.info'
     rpl_dict = {'BASE_NAME': problem.letter,
                 'FULL_NAME': problem.full_name,
                 'DESCRIPTION_FILE': pdf_file}
-
     utils.fill_template(desc_file, desc_file, rpl_dict)
+
+    pdf_file = os.path.join(dest_dir, '..', pdf_file)
+    utils.copy(pdf_file, desc_dir)
 
 
 def create_zip_file(problem, dest_dir, pdf):
@@ -116,7 +120,7 @@ def create_zip_file(problem, dest_dir, pdf):
         copy_BOCA_dirs(utils.Templates.BOCA.dir(), dest_dir)  # Padrão
         boca_dirs = ['input', 'output', 'limits']  # Específicos
         copy_BOCA_dirs(problem.full_dir, dest_dir, boca_dirs)
-        create_info_file(dest_dir, problem, pdf)
+        create_description(dest_dir, problem, pdf)
         zip_dir(dest_dir, '../{}'.format(problem.letter))
 
 
