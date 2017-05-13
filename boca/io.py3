@@ -65,7 +65,7 @@ def gen_ouput(src_file, timeit, runs=0, set_time_limit=False):
     for (dirpath, dirnames, filenames) in os.walk(os.path.join(root, 'input')):
         for f in natural_sort(filenames):
             input_file = os.path.join(root, 'input', f)
-            output_file = os.path.join(root, 'outut', f)
+            output_file = os.path.join(root, 'output', f)
             action = input_file + ' > ' + output_file
             cmd = bash_cmd + ' < ' + action
 
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
     parser = ArgumentParser(add_help=False,
-                            description=' gerar arquivos de teste '
+                            description='Gerar arquivos de teste '
                                         '(entrada/saída) para um problema de '
                                         'um contest para a Maratona (BOCA).',
                             formatter_class=RawDescriptionHelpFormatter,

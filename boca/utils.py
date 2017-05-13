@@ -201,7 +201,7 @@ class Language():
 
 
 class BOCALanguage(Language):
-    '''Busca as configurações de uma linguagem para ser usada na BOCA.'''
+    '''Busca as configurações de uma linguagem para ser usada no BOCA.'''
     def __init__(self, name, extension, compiler_regex,
                  compilation_flags_regex):
         super(BOCALanguage, self).__init__(name, extension)
