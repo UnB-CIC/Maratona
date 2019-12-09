@@ -30,7 +30,7 @@ class Problem():
     @property
     def full_name(self):
         if not self.__full_name:
-            full_name = utils.first_occurrence(r'\NomeDoProblema{(.*?)}',
+            full_name = utils.first_occurrence(r'\\NomeDoProblema{(.*?)}',
                                                self.tex_file)
 
             if not full_name:

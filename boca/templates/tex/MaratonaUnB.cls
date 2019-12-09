@@ -42,12 +42,12 @@
 
 \NeedsTeXFormat{LaTeX2e}[1999/12/01]%
 
-\ProvidesClass{MaratonaUnB}[2016/11/29 Classe para gerar simulados para MaratonaUnB de Programação da UnB.]%
+\ProvidesClass{MaratonaUnB}[2016/11/29 Classe para gerar simulados para Maratona de Programacao da UnB.]%
 
 \ProcessOptions\relax%
 \LoadClass{UnBExam}%
 \extraheadheight[0cm]{0mm}%
-\documento{MaratonaUnB de Programação UnB}%
+\documento{Maratona de Programação UnB}%
 \data{\today}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
