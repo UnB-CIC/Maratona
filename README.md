@@ -1,30 +1,51 @@
-Maratona de Programação UnB
-===========================
+# Introdução
 
-Repositório de código/material de estudo para a Maratona de Programação ICPC. O conteúdo envolve:
+Introdução para novatos interessados em participar da Maratona de Programação.
 
-* Análise de Provas (resolução/comentários de provas "oficiais")
-* Material Didático (material de estudo sobre diversos temas)
-* Código (soluções que podem ser reaproveitadas)
+![Maratona de Programação](logo.jpg)
 
-Começando
----------
+## O que é a maratona?
 
-Supõe-se que você:
+A maratona de programação é uma competição em equipe em que são propostos aos competidores diversos problemas para serem solucionados. Os times são formados por 3 integrantes, que disputam pelo título de equipe com mais questões resolvidas em menos tempo.
 
-* gosta _muito_ de programar (muito mesmo);
-* sabe se virar com algoritmos e estruturas de dados;
-* está disposto(a) a usar várias horas aprimorando suas habilidades de programação (muitas mesmo);
-* tem a ambição de se tornar o(a) mestre de ~~[insira linguagem]~~ [C++](https://pt.wikipedia.org/wiki/C%2B%2B).
+Os problemas propostos estão ligados ao ramo da __programação competitiva__ e requerem dos competidores a elaboração de __programas__ que os resolvam de forma inteligente. Os times possuem 5 horas para resolverem cerca de 12 questões com apenas um computador por equipe.
 
-Treinamento
------------
+Habilidades trabalhadas na maratona:
 
-O resultado depende apenas do seu treinamento (assumindo que você, como [Feola](http://www.cienciadaestrategia.com.br/teoriadosjogos/capitulo.asp?cap=i2), já combinou com os [russos](http://www.bloomberg.com/news/features/2015-09-25/the-jocks-of-computer-code-do-it-for-the-job-offers)). O que funciona é, basicamente, __prática de programação__, mas você pode separar em alguns pontos:
+* Trabalho em equipe;
+* Conhecimento de algoritmos e estruturas de dados;
+* Domínio da ferramenta utilizada (linguagem de programação);
+* Capacidade de lidar com problemas de forma rápida e eficiente.
 
-1. **[Leitura](Estudo/Leitura.md)** tanto sobre programação, algoritmos e estruturas de dados (etc.) quanto de programas bem feitos. O que você já sabe ainda não é suficiente.
-1. **Ambiente de programação** para exercitar seus conhecimentos e habilidades.
-1. **[Prática de programação](Estudo/Programacao.md)** com uma linguagem ~~C++~~ de sua preferência (dentre as aceitas na competição). Acredite, você ainda não praticou o suficiente.
-1. **Recursos** para usar de referência, como livros, [sites de discussão](Estudo/Sites.md), repositórios de problemas, [trechos de código](src/README.md) interessantes, [maratonistas mais experientes](Estudo/Dicas.md), entre outros.
-1. **Familiaridade com [juiz automático](Estudo/Juizes.md)** para simular o ambiente/problemas da competição.
-1. **Familiaridade com seu time** afinal, é uma disputa em grupo.
+
+## Programação Competitiva
+
+A programação competitiva propõe questões a serem resolvidas com o uso de algoritmos conhecidos, estruturas de dados e ideias para adapta-los ao problema, tudo isso em um ambiente de competição.
+
+O número de questões resolvidas, de soluções erradas submetidas e o tempo que cada questão levou para ser resolvida são os parâmetros utilizados para classificar as equipes.
+
+Uma solução é considerada errada caso não resolva o problema corretamente ou caso não respeite os limites de tempo de execução e memória utilizada, requisitando assim que as soluções propostas sejam eficazes e eficientes.
+
+
+## Por que participar da maratona?
+
+A maratona estimula o pensamento computacional e matemático, a capacidade de resolução de problemas, o trabalho em equipe e o esforço do competidor, competências essas muito bem vistas no mercado de trabalho, principalmente nas grandes empresas de software, como __Google__, __Facebook__, __Microsoft__, __Vtex__, __InLoco__, __Nubank__, entre outras. Alguns alunos da UnB que participavam das maratonas de programação conseguiram estagios e empregos em muitas das empresas listadas, veja [aqui](https://gist.github.com/claudiosegala/29c7fc9745bcaec40d702aa2a1ef3088).
+
+Além disso, a maratona é uma forma divertida e eficiente de colocar os assuntos aprendidos em sala de aula em prática, de conhecer novas pessoas, viajar para novos lugares a estudo e de se sentir motivado em continuar estudando ao longo da sua graduação.
+
+## Primeiros passos
+
+O primeiro passo para participar das maratonas de programação é possuir familiaridade com uma linguagem de programação. O __C++__ é uma ferramenta muito utilizada e recomendada para a resolução de problemas de programação competitiva, caso não conheça sua sintaxe veja [Ambiente](Ambiente/README.md).
+
+Existem diversas formas de estudar programação competitiva, por meio de materiais, livros, vídeos, resolvendo questões, etc. Para saber mais sobre como estudar para a maratona veja [Estudos](Estudos).
+
+Uma vez familiarizado com uma linguagem de programação e conhecendo os meios de estudo da programação competitiva, está pronto para estudar e treinar os assuntos abordados. Veja [Conteúdos](Conteúdo) e [Questões](Questões).
+
+## Contatos
+
+A Universidade de Brasília possui um grupo de estudos ([__UnBallon__](https://github.com/UnBalloon/programacao-competitiva)) para as maratonas de programação, hospedado no telegram, onde você pode tirar dúvidas sobre a maratona, questões, conteúdos, etc. Pode ser encontrado apenas pesquisando o nome UnBallon no telegram.
+
+![UnBallon](unballon.png)
+
+Existe também um grupo da maratona com pessoas de todo o país (__Maratona de Programação Brasil__), onde também se discute dúvidas sobre questões.
+
