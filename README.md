@@ -43,9 +43,8 @@ Uma vez familiarizado com uma linguagem de programação e conhecendo os meios d
 
 ## Contatos
 
-A Universidade de Brasília possui um grupo de estudos ([__UnBallon__](https://github.com/UnBalloon/programacao-competitiva)) para as maratonas de programação, hospedado no telegram, onde você pode tirar dúvidas sobre a maratona, questões, conteúdos, etc. Pode ser encontrado apenas pesquisando o nome UnBallon no telegram.
+A Universidade de Brasília possui um grupo de estudos ([__UnBallon__](https://github.com/UnBalloon/programacao-competitiva)) para as maratonas de programação, hospedado no telegram, onde você pode tirar dúvidas sobre a maratona, questões, conteúdos, etc. Pode ser encontrado apenas pesquisando o nome UnBallon no telegram (Existe também o grupo __Anúncios UnBalloon__, onde apenas anúncios importantes são feitos).
 
 ![UnBallon](unballon.png)
 
-Existe também um grupo da maratona com pessoas de todo o país (__Maratona de Programação Brasil__), onde também se discute dúvidas sobre questões.
-
+Existe também um grupo da maratona com pessoas de todo o país (__Maratona de Programação Brasil__), onde também se discute dúvidas sobre questões, e outro apenas do Distrito Federal (__MaratonasDF__), onde maratonas de programação que ocorrem aqui na região são anunciadas.
