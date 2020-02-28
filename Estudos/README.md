@@ -45,3 +45,22 @@ O [URI](https://www.urionlinejudge.com.br/judge/pt) é também uma plataforma de
 ## Outros
 
 Existem outras plataformas interessantes como o [AtCoder](https://atcoder.jp/home), [UVa Online Judge](https://onlinejudge.org/), entre outros.
+
+
+# Maratonas
+
+## [Maratona SBC de Programação](http://maratona.ime.usp.br/index19.html)
+
+Esse é o evento principal da maratona de programação no Brasil, essa maratona é realizada pela Sociedade Brasileira de Computação e serve como classificatória para selecionar os times que representarão o Brasil na mundial ([ICPC](https://icpc.baylor.edu/)).
+
+Ela é dividida em duas fases, a primeira é a regional, ela seleciona times de diferentes regiões e universidades para a segunda fase, que é a nacional. As duas ocorrem por volta de setembro e novembro respectivamente.
+
+Para a primeira fase (regional) normalmante a UnB só dispõe de vagas para 5 times, e para escolher os times existe uma Seletiva, onde os melhores times são classificados para participar da primeira fase regional, com a inscrição paga pela UnB.
+
+## Não Oficiais
+
+Aqui no Distrito Federal existe um [grupo](https://codeforces.com/group/btcK4I5D5f/contests) de universidades e faculdades (UnB Darcy, FGA, IESB e IFB) que realizam maratonas de programação como treino para seus alunos, e todos são convidados a participar. A maioria delas são voltadas para iniciantes, então é uma ótima oportunidade para quem está começando agora.
+
+## Competições de Empresas
+
+Algumas empresas de software realizam competições de forma muito parecida com as maratonas de programação, onde normalmente as primeiras fases são à distância, e a última é presencial. Alguns exemplos são a [Google Code Jam](https://codingcompetitions.withgoogle.com/codejam), [Facebook Hacker Cup](https://www.facebook.com/hackercup/) e [VTEX Code Cup](https://codecup.vtex.com/) (Brasileira).
