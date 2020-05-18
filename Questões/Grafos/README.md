@@ -1,7 +1,0 @@
-# Grafos
-
-## Fácil
-
-## Intermediário
-
-## Difícil

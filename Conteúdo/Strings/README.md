@@ -1,7 +1,0 @@
-# Strings
-
-## Fácil
-
-## Intermediário
-
-## Difícil

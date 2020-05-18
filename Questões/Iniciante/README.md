@@ -1,7 +1,0 @@
-# Iniciante
-
-## Fácil
-
-## Intermediário
-
-## Difícil

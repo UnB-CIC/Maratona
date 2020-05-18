@@ -1,7 +1,0 @@
-# Geometria
-
-## Fácil
-
-## Intermediário
-
-## Difícil

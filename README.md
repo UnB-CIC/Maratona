@@ -35,16 +35,14 @@ Além disso, a maratona é uma forma divertida e eficiente de colocar os assunto
 
 ## Primeiros passos
 
-O primeiro passo para participar das maratonas de programação é possuir familiaridade com uma linguagem de programação. O __C++__ é uma ferramenta muito utilizada e recomendada para a resolução de problemas de programação competitiva, caso não conheça sua sintaxe veja [Ambiente](Ambiente/README.md).
+Para participar das maratonas de programação, entre em contato com o grupo de estudos ([__UnBallon__](https://t.me/unballoon)) no telegram, lá você pode tirar dúvidas sobre a maratona, questões e conteúdos, participar de competições semanais de treino na plataforma do Codeforces (mashups), e ficar por dentro das datas das maratonas feitas aqui no DF e na universidade. O grupo é bem amigável a iniciantes, basta entrar e se apresentar.
 
-Existem diversas formas de estudar programação competitiva, por meio de materiais, livros, vídeos, resolvendo questões, etc. Para saber mais sobre como estudar para a maratona veja [Estudos](Estudos).
-
-Uma vez familiarizado com uma linguagem de programação e conhecendo os meios de estudo da programação competitiva, está pronto para estudar e treinar os assuntos abordados. Veja [Conteúdos](Conteúdo) e [Questões](Questões).
-
-## Contatos
-
-A Universidade de Brasília possui um grupo de estudos ([__UnBallon__](https://github.com/UnBalloon/programacao-competitiva)) para as maratonas de programação, hospedado no telegram, onde você pode tirar dúvidas sobre a maratona, questões, conteúdos, etc. Pode ser encontrado apenas pesquisando o nome UnBallon no telegram (Existe também o grupo __Anúncios UnBalloon__, onde apenas anúncios importantes são feitos).
+Para ter acesso a conteúdos para estudo, entre no [Github do Unballon](https://github.com/UnBalloon/programacao-competitiva), onde é possível encontrar explicações e exemplos de diversos algoritmos utilizados nas competições.
 
 ![UnBallon](unballon.png)
+
+## Outros contatos
+
+Existe também o grupo [__Anúncios UnBalloon__](https://t.me/avisosunballoon), onde apenas anúncios importantes são feitos.
 
 Existe também um grupo da maratona com pessoas de todo o país (__Maratona de Programação Brasil__), onde também se discute dúvidas sobre questões, e outro apenas do Distrito Federal (__MaratonasDF__), onde maratonas de programação que ocorrem aqui na região são anunciadas.

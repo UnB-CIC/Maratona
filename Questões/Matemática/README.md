@@ -1,7 +1,0 @@
-# Matemática
-
-## Fácil
-
-## Intermediário
-
-## Difícil

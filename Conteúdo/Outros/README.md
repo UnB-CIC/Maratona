@@ -1,7 +1,0 @@
-# Outros
-
-## Fácil
-
-## Intermediário
-
-## Difícil
